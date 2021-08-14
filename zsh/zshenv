@@ -1,0 +1,32 @@
+export LANG='en_US.UTF-8'
+export LC_ALL=$LANG
+export PAGER='less'
+
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CACHE_HOME="$HOME/.cache"
+
+if [ -f $HOME/.private ]; then
+    source $HOME/.private
+fi
+
+typeset -U path
+path=(
+    $HOME/.local/bin
+    $path
+)
+
+fpath=(
+    $XDG_DATA_HOME/zsh/completions
+    $fpath
+)
+
+if (( $+commands[nvim] )); then
+    export EDITOR='nvim'
+    export VISUAL='nvim'
+else
+    export EDITOR='vim'
+    export VISUAL='vim'
+fi
+
+# vim: ft=zsh
