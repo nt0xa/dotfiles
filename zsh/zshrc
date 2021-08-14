@@ -14,7 +14,9 @@ zplug "zsh-users/zsh-autosuggestions"
 
 zplug "russtone/prompt-russtone", as:theme, use:theme.zsh
 
-zplug load
+if [[ -o interactive ]] then
+  zplug load
+fi
 
 # }}} Plugins #
 
