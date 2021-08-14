@@ -102,8 +102,6 @@ bindkey '^g' edit-command-line
 alias v='nvim'
 alias p='python3'
 alias pp='ptpython'
-alias hex='open -a Synalyze\ It\!\ Pro'
-alias xml='xmlstarlet'
 
 # }}} Aliases #
 
