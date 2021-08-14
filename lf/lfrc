@@ -1,0 +1,34 @@
+# Options {{{ #
+
+# Show only one pane
+set nopreview
+set ratios 1
+
+set color256
+
+# }}} #
+
+# Commands {{{ #
+
+cmd touch %touch $1
+cmd mkdir %mkdir $1
+
+# }}} #
+
+# Keybindings {{{ #
+
+map , push :touch<space>
+map . push :mkdir<space>
+
+# Delete
+map D :delete
+
+# Open
+map <enter> open
+
+# Rename
+map a :rename
+
+# }}} #
+
+# vim: fdm=fold ft=conf
