@@ -33,7 +33,6 @@ zstyle ':completion:*' matcher-list \
 
 # Use cache
 zstyle ':completion::complete:*' use-cache on
-zstyle ':completion::complete:*' cache-path $XDG_CACHE_HOME/zsh/zcompcache
 
 # Use menu if more than one result
 zstyle ':completion:*:*:*:*:*' menu select
@@ -49,7 +48,6 @@ zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 # History {{{ #
 
 # Variables
-HISTFILE=$XDG_DATA_HOME/zsh/history
 HISTSIZE=100000
 SAVEHIST=100000
 
