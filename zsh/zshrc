@@ -1,20 +1,19 @@
 # Plugins {{{ #
 
-export ZPLUG_HOME=$HOME/.zplug
-if [[ ! -d $ZPLUG_HOME ]]; then
-  git clone https://github.com/zplug/zplug $ZPLUG_HOME
+export ZINIT_HOME=$HOME/.zinit
+if [[ ! -d $ZINIT_HOME ]]; then
+  git clone https://github.com/zdharma/zinit.git $ZINIT_HOME/bin
 fi
-source $ZPLUG_HOME/init.zsh
+source $ZINIT_HOME/bin/zinit.zsh
 
-zplug "zsh-users/zsh-completions"
+zinit light "zsh-users/zsh-completions"
 
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
-zplug "zsh-users/zsh-history-substring-search", defer:3
-zplug "zsh-users/zsh-autosuggestions"
+zinit light "zsh-users/zsh-syntax-highlighting"
+zinit light "zsh-users/zsh-history-substring-search"
+zinit light "zsh-users/zsh-autosuggestions"
 
-zplug "russtone/prompt-russtone", as:theme, use:theme.zsh
-
-zplug load
+zinit ice pick"theme.zsh"
+zinit light "russtone/prompt-russtone"
 
 # }}} Plugins #
 
