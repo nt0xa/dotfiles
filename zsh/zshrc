@@ -6,11 +6,16 @@ if [[ ! -d $ZINIT_HOME ]]; then
 fi
 source $ZINIT_HOME/bin/zinit.zsh
 
-zinit light "zsh-users/zsh-completions"
+zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
+    zsh-users/zsh-completions
 
-zinit light "zsh-users/zsh-syntax-highlighting"
-zinit light "zsh-users/zsh-history-substring-search"
-zinit light "zsh-users/zsh-autosuggestions"
+zinit wait lucid atload"zicompinit" blockf for \
+    zsh-users/zsh-syntax-highlighting
+
+zinit light zsh-users/zsh-history-substring-search
+
+zinit wait lucid for \
+    zsh-users/zsh-autosuggestions
 
 zinit ice pick"theme.zsh"
 zinit light "russtone/prompt-russtone"
