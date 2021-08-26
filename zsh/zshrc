@@ -104,6 +104,14 @@ alias v='nvim'
 alias p='python3'
 alias pp='ptpython'
 
+function kali {
+  if [ ! "$(docker ps -q -f name=kali)" ]; then
+    docker run --name kali --rm -i -t -v $PWD:/docker -w /docker -p 445:445 -p 1337:1337 --rm ghcr.io/russtone/kali:main
+  else
+    docker exec -t -i kali zsh
+  fi
+}
+
 # }}} Aliases #
 
 # Dircolors {{{ #
