@@ -1,23 +1,29 @@
 # Plugins {{{ #
 
-export ZINIT_HOME=$HOME/.zinit
+typeset -A ZINIT
+ZINIT_HOME="$XDG_DATA_HOME/zsh/zinit"
+ZINIT[HOME_DIR]="$ZINIT_HOME"
+ZINIT[ZCOMPDUMP_PATH]="$XDG_CACHE_HOME/zsh/zcompdump"
+
 if [[ ! -d $ZINIT_HOME ]]; then
   git clone https://github.com/zdharma/zinit.git $ZINIT_HOME/bin
 fi
-source $ZINIT_HOME/bin/zinit.zsh
+source "$ZINIT_HOME/bin/zinit.zsh"
 
-zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
-    zsh-users/zsh-completions
+zinit lucid wait'1' atload'_history_substring_key_bindings' for \
+  zsh-users/zsh-history-substring-search
 
-zinit wait lucid atload"zicompinit" blockf for \
-    zsh-users/zsh-syntax-highlighting
+zinit lucid wait'1' atload'_zsh_autosuggest_start' for \
+  zsh-users/zsh-autosuggestions
 
-zinit light zsh-users/zsh-history-substring-search
+zinit lucid wait for \
+  zsh-users/zsh-syntax-highlighting
 
-zinit light zsh-users/zsh-autosuggestions
+zinit lucid wait atload"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" blockf for \
+  zsh-users/zsh-completions
 
-zinit ice pick"theme.zsh"
-zinit light "russtone/prompt-russtone"
+zinit lucid pick"theme.zsh" for \
+  russtone/prompt-russtone
 
 # }}} Plugins #
 
@@ -36,6 +42,7 @@ zstyle ':completion:*' matcher-list \
 
 # Use cache
 zstyle ':completion::complete:*' use-cache on
+zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/zcompcache"
 
 # Use menu if more than one result
 zstyle ':completion:*:*:*:*:*' menu select
@@ -49,6 +56,8 @@ zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 # }}} Completions #
 
 # History {{{ #
+
+export HISTFILE="$XDG_DATA_HOME/zsh/history"
 
 # Variables
 HISTSIZE=100000
@@ -68,8 +77,11 @@ setopt INC_APPEND_HISTORY
 
 # Key bindings {{{ #
 
-bindkey '^p' history-substring-search-up
-bindkey '^n' history-substring-search-down
+# Wrapped with function to make async loading possible.
+function _history_substring_key_bindings {
+  bindkey '^p' history-substring-search-up
+  bindkey '^n' history-substring-search-down
+}
 
 bindkey '^u' backward-kill-line
 bindkey '^t' kill-line
@@ -106,7 +118,14 @@ alias pp='ptpython'
 
 function kali {
   if [ ! "$(docker ps -q -f name=kali)" ]; then
-    docker run --name kali --rm -i -t -v $PWD:/docker -w /docker -p 445:445 -p 1337:1337 --rm ghcr.io/russtone/kali:main
+    docker run -i -t \
+      --rm \
+      --name kali \
+      -v $PWD:/docker \
+      -w /docker \
+      -p 445:445 \
+      -p 1337:1337 \
+      ghcr.io/russtone/kali:main
   else
     docker exec -t -i kali zsh
   fi
