@@ -110,28 +110,13 @@ bindkey '^g' edit-command-line
 
 # }}} Key bindings #
 
-# Aliases {{{ #
+# Aliases & Functions {{{ #
 
 alias v='nvim'
 alias p='python3'
 alias pp='ptpython'
 
-function kali {
-  if [ ! "$(docker ps -q -f name=kali)" ]; then
-    docker run -i -t \
-      --rm \
-      --name kali \
-      -v $PWD:/docker \
-      -w /docker \
-      -p 445:445 \
-      -p 1337:1337 \
-      ghcr.io/russtone/kali:main
-  else
-    docker exec -t -i kali zsh
-  fi
-}
-
-# }}} Aliases #
+# }}} Aliases & Functions #
 
 # Dircolors {{{ #
 
@@ -183,3 +168,12 @@ function preexec {
 }
 
 # }}} #
+
+# Extra {{{ #
+
+# Some extra stuff, e.g. prompt modification
+if [ -f "$HOME/.extra" ]; then
+  source "$HOME/.extra"
+fi
+
+# }}} Extra #
