@@ -29,7 +29,7 @@ Plug 'SirVer/ultisnips'
 
 " LSP
 Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-lua/completion-nvim'
+Plug 'hrsh7th/nvim-compe'
 
 " Syntax
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -304,6 +304,27 @@ nnoremap gh :SidewaysLeft<CR>
 nnoremap gl :SidewaysRight<CR>
 
 " }}} Sideways
+"
+" Plugin: Compe {{{
+
+let g:compe = {}
+
+let g:compe.source = {}
+let g:compe.source.path = v:true
+let g:compe.source.buffer = v:true
+let g:compe.source.calc = v:true
+let g:compe.source.nvim_lsp = v:true
+let g:compe.source.nvim_lua = v:true
+
+" }}} Compe
+
+" Plugin: UltiSnips {{{ "
+
+let g:UltiSnipsExpandTrigger = '<Tab>'
+let g:UltiSnipsJumpForwardTrigger = '<Tab>'
+let g:UltiSnipsJumpBackwardTrigger = '<S-Tab>'
+
+" }}} Plugin: UltiSnips "
 
 " Lua {{{
 
@@ -312,3 +333,4 @@ require('config')
 EOF
 
 " }}} Lua
+

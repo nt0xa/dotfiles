@@ -115,6 +115,8 @@ bindkey '^g' edit-command-line
 alias v='nvim'
 alias p='python3'
 alias pp='ptpython'
+alias now='date +%d-%m-%Y_%H-%M'
+alias pssh="proxychains4 $(find /usr/local/Cellar/openssh -type f -name ssh) -F /dev/null"
 
 # }}} Aliases & Functions #
 

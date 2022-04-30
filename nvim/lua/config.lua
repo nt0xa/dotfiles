@@ -5,8 +5,6 @@ local lspconfig = require('lspconfig')
 -- vim.lsp.set_log_level('debug')
 
 local on_attach = function(client, bufnr)
-  require('completion').on_attach()
-
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
@@ -37,15 +35,16 @@ local on_attach = function(client, bufnr)
   end
 end
 
-local servers = { 'gopls', 'tsserver' }
+local servers = {
+  'gopls',
+  'tsserver',
+  'pyright',
+  'sourcekit'
+}
 
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup { on_attach = on_attach }
 end
-
-lspconfig.pyright.setup {
-  on_attach = on_attach
-}
 
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -138,7 +137,7 @@ require('nvim-treesitter.configs').setup {
     enable = true,
   },
   indent = {
-    enable = true
+    enable = false
   },
 }
 
