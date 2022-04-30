@@ -1,0 +1,8 @@
+*
+!.gitignore
+!alacritty
+!dircolors
+!lf
+!nvim
+!tmux
+!zsh
