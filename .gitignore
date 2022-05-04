@@ -3,8 +3,9 @@
 !alacritty/*
 !dircolors/*
 !lf/*
-!nvim/*
-!nvim/lua/*
-!nvim/UltiSnips/*
+!nvim/colors/xcode.vim
+!nvim/init.lua
 !tmux/tmux.conf
-!zsh/*
+!zsh/xdg
+!zsh/zshrc
+!zsh/zshenv
