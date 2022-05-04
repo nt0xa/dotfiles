@@ -4,8 +4,6 @@
 set nopreview
 set ratios 1
 
-set color256
-
 # }}} #
 
 # Commands {{{ #
@@ -17,8 +15,8 @@ cmd mkdir %mkdir $1
 
 # Keybindings {{{ #
 
-map , push :touch<space>
-map . push :mkdir<space>
+map n push :touch<space>
+map N push :mkdir<space>
 
 # Delete
 map D :delete
@@ -27,8 +25,8 @@ map D :delete
 map <enter> open
 
 # Rename
-map a :rename
+map r :rename
 
 # }}} #
 
-# vim: fdm=fold ft=conf
+# vim: fdm=fold

@@ -171,11 +171,37 @@ function preexec {
 
 # }}} #
 
-# Extra {{{ #
+# FZF {{{ #
 
-# Some extra stuff, e.g. prompt modification
-if [ -f "$HOME/.extra" ]; then
-  source "$HOME/.extra"
+if (( $+commands[fzf] )); then
+  # Auto-completion
+  source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
+
+  # Key bindings
+  source "/usr/local/opt/fzf/shell/key-bindings.zsh"
+
+  # Options
+  export FZF_DEFAULT_OPTS='
+  --layout=reverse
+  --color fg:15,bg:-1,hl:3,fg+:3,bg+:-1,hl+:3
+  --color info:7,prompt:2,spinner:4,pointer:2,marker:2
+  '
+
+  if (( $+commands[fd] )); then
+    # Use fd (https://github.com/sharkdp/fd) instead of
+    # the default find command for listing path candidates.
+    export FZF_DEFAULT_COMMAND='fd --type f'
+
+    _fzf_compgen_path() {
+      fd --hidden --follow --exclude ".git" . "$1"
+    }
+
+    _fzf_compgen_dir() {
+      fd --type d --hidden --follow --exclude ".git" . "$1"
+    }
+
+  fi
 fi
 
-# }}} Extra #
+# }}} FZF #
+

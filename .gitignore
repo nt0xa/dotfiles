@@ -1,8 +1,10 @@
 *
 !.gitignore
-!alacritty
-!dircolors
-!lf
-!nvim
-!tmux
-!zsh
+!alacritty/*
+!dircolors/*
+!lf/*
+!nvim/*
+!nvim/lua/*
+!nvim/UltiSnips/*
+!tmux/tmux.conf
+!zsh/*
