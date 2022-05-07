@@ -186,7 +186,7 @@ vim.keymap.set("i", "<C-d>", "<Delete>")
 -- Treesitter & textobjects {{{
 
 require("nvim-treesitter.configs").setup({
-  ensure_installed = { "c", "lua", "go", "python", "typescript" },
+  ensure_installed = { "c", "lua", "go", "python", "typescript", "html" },
   highlight = {
     enable = true,
   },
