@@ -186,7 +186,16 @@ vim.keymap.set("i", "<C-d>", "<Delete>")
 -- Treesitter & textobjects {{{
 
 require("nvim-treesitter.configs").setup({
-  ensure_installed = { "c", "lua", "go", "python", "typescript", "html" },
+  ensure_installed = {
+    "c",
+    "lua",
+    "go",
+    "python",
+    "javascript",
+    "typescript",
+    "html",
+    "hcl",
+  },
   highlight = {
     enable = true,
   },
@@ -312,9 +321,7 @@ cmp.setup({
   },
   mapping = cmp.mapping.preset.insert({
     ["<Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
+      if luasnip.expand_or_jumpable() then
         luasnip.expand_or_jump()
       elseif has_words_before() then
         cmp.complete()
@@ -323,9 +330,7 @@ cmp.setup({
       end
     end, { "i", "s" }),
     ["<S-Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
+      if luasnip.jumpable(-1) then
         luasnip.jump(-1)
       else
         fallback()
@@ -336,8 +341,8 @@ cmp.setup({
     ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
   }),
   sources = cmp.config.sources({
+    { name = "luasnip", max_item_count = 10, priority = 10 },
     { name = "nvim_lsp", max_item_count = 10 },
-    { name = "luasnip", max_item_count = 10 },
   }, {
     { name = "buffer", max_item_count = 10 },
   }),
