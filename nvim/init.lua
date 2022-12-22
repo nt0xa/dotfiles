@@ -282,7 +282,7 @@ local on_attach = function(_, bufnr)
   buf_set_keymap("n", "<leader>n", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", opts)
   buf_set_keymap("n", "<leader>p", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
   buf_set_keymap("n", "<localleader>q", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
-  buf_set_keymap("n", "<localleader>e", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", opts)
+  buf_set_keymap("n", "<localleader>e", "<cmd>lua vim.diagnostic.open_float() <CR>", opts)
 end
 
 -- Servers
@@ -360,7 +360,7 @@ cmp.setup.cmdline(":", {
   }),
 })
 
-local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 for _, lsp in ipairs(servers) do
   local opts = { on_attach = on_attach, capabilities = capabilities }
@@ -477,65 +477,26 @@ require("formatter").setup({
   logging = false,
   filetype = {
     go = {
-      function()
-        return {
-          exe = "gofmt",
-          args = {},
-          stdin = true,
-        }
-      end,
-      function()
-        return {
-          exe = "goimports",
-          args = {},
-          stdin = true,
-        }
-      end,
+      require("formatter.filetypes.go").gofmt,
+      require("formatter.filetypes.go").goimports,
     },
     javascript = {
-      function()
-        return {
-          exe = "prettier",
-          args = { "--stdin-filepath", vim.api.nvim_buf_get_name(0) },
-          stdin = true,
-        }
-      end,
+      require("formatter.defaults").prettier,
     },
     javascriptreact = {
-      function()
-        return {
-          exe = "prettier",
-          args = { "--stdin-filepath", vim.api.nvim_buf_get_name(0) },
-          stdin = true,
-        }
-      end,
+      require("formatter.defaults").prettier,
     },
     typescript = {
-      function()
-        return {
-          exe = "prettier",
-          args = { "--stdin-filepath", vim.api.nvim_buf_get_name(0) },
-          stdin = true,
-        }
-      end,
+      require("formatter.defaults").prettier,
     },
     typescriptreact = {
-      function()
-        return {
-          exe = "prettier",
-          args = { "--stdin-filepath", vim.api.nvim_buf_get_name(0) },
-          stdin = true,
-        }
-      end,
+      require("formatter.defaults").prettier,
+    },
+    html = {
+      require("formatter.defaults").prettier,
     },
     python = {
-      function()
-        return {
-          exe = "black",
-          args = { "-" },
-          stdin = true,
-        }
-      end,
+      require("formatter.filetypes.python").black,
     },
     lua = {
       function()

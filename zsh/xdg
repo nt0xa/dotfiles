@@ -23,5 +23,16 @@ export NUGET_PACKAGES="$XDG_DATA_HOME/nuget"
 
 # Python
 export PYTHONHISTFILE="$XDG_DATA_HOME/python/history"
+export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
+export PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/pythonrc"
+
+# Sage
+export DOT_SAGE="$XDG_CONFIG_HOME/sage"
+
+# Android
+export ANDROID_HOME="$XDG_DATA_HOME/android"
+
+# SQlite
+export SQLITE_HISTORY="$XDG_DATA_HOME/sqlite/history"
 
 # vim: ft=zsh

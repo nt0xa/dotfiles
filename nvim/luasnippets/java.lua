@@ -21,16 +21,13 @@ local parse = ls.parser.parse_snippet
 
 return {
   parse(
-    "html",
+    "main",
     [[
-<!DOCTYPE html>
-<html>
-<head>
-</head>
-<body>
-$0
-</body>
-</html>
+public class Main {
+  public static void main(String[] args) {
+    System.out.println("Hello, world!");
+  }
+}
 ]]
   ),
 }
