@@ -1,0 +1,30 @@
+theme = "nord"
+
+[editor]
+true-color = true
+cursorline = true
+auto-pairs = false
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[keys]
+
+[keys.normal]
+0 = "goto_line_start"
+"$" = "goto_line_end"
+G = "goto_file_end"
+
+[keys.insert]
+# Emacs style keys
+C-a = "goto_line_start"
+C-e = "goto_line_end_newline"
+C-f = "move_char_right"
+C-b = "move_char_left"
+
+[keys.select]
+0 = "goto_line_start"
+"$" = "goto_line_end"
+G = "goto_file_end"

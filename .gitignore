@@ -22,3 +22,8 @@
 
 !zsh
 !zsh/*
+
+!starship.toml
+
+!helix
+!helix/config.toml
