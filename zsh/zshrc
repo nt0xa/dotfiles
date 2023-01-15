@@ -1,29 +1,32 @@
+# Prompt {{{ #
+
+eval "$(starship init zsh)"
+
+# }}} Prompt #
+
 # Plugins {{{ #
 
-typeset -A ZINIT
-ZINIT_HOME="$XDG_DATA_HOME/zsh/zinit"
-ZINIT[HOME_DIR]="$ZINIT_HOME"
-ZINIT[ZCOMPDUMP_PATH]="$XDG_CACHE_HOME/zsh/zcompdump"
+typeset -A ZI
+ZI_HOME="$XDG_DATA_HOME/zsh/zi"
+ZI[HOME_DIR]="$ZI_HOME"
+ZI[ZCOMPDUMP_PATH]="$XDG_CACHE_HOME/zsh/zcompdump"
 
-if [[ ! -d $ZINIT_HOME ]]; then
-  git clone https://github.com/zdharma/zinit.git $ZINIT_HOME/bin
+if [[ ! -d $ZI_HOME ]]; then
+  git clone https://github.com/z-shell/zi $ZI_HOME
 fi
-source "$ZINIT_HOME/bin/zinit.zsh"
+source "$ZI_HOME/zi.zsh"
 
-zinit lucid wait'1' atload'_history_substring_key_bindings' for \
+zi lucid wait'1' atload'_history_substring_key_bindings' for \
   zsh-users/zsh-history-substring-search
 
-zinit lucid wait'1' atload'_zsh_autosuggest_start' for \
+zi lucid wait'1' atload'_zsh_autosuggest_start' for \
   zsh-users/zsh-autosuggestions
 
-zinit lucid wait for \
+zi lucid wait for \
   zsh-users/zsh-syntax-highlighting
 
-zinit lucid wait atload"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" blockf for \
+zi lucid wait atload"ZI[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" blockf for \
   zsh-users/zsh-completions
-
-zinit lucid pick"theme.zsh" for \
-  russtone/prompt-russtone
 
 # }}} Plugins #
 
@@ -31,6 +34,7 @@ zinit lucid pick"theme.zsh" for \
 
 zmodload zsh/complist
 
+# Show menu instead of just completion
 setopt AUTO_MENU
 setopt COMPLETE_IN_WORD
 setopt ALWAYS_TO_END
@@ -44,10 +48,10 @@ zstyle ':completion:*' matcher-list \
 zstyle ':completion::complete:*' use-cache on
 zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/zcompcache"
 
-# Use menu if more than one result
+## Use menu if more than one result
 zstyle ':completion:*:*:*:*:*' menu select
 
-# Format of group name
+## Format of group name
 zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
 
 # Colors in completion menu
@@ -113,10 +117,6 @@ bindkey '^g' edit-command-line
 # Aliases & Functions {{{ #
 
 alias v='nvim'
-alias p='python3'
-alias pp='ptpython'
-alias now='date +%d-%m-%Y_%H-%M'
-alias pssh="proxychains4 $(find /usr/local/Cellar/openssh -type f -name ssh) -F /dev/null"
 
 # }}} Aliases & Functions #
 
@@ -170,38 +170,4 @@ function preexec {
 }
 
 # }}} #
-
-# FZF {{{ #
-
-if (( $+commands[fzf] )); then
-  # Auto-completion
-  source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
-
-  # Key bindings
-  source "/usr/local/opt/fzf/shell/key-bindings.zsh"
-
-  # Options
-  export FZF_DEFAULT_OPTS='
-  --layout=reverse
-  --color fg:15,bg:-1,hl:3,fg+:3,bg+:-1,hl+:3
-  --color info:7,prompt:2,spinner:4,pointer:2,marker:2
-  '
-
-  if (( $+commands[fd] )); then
-    # Use fd (https://github.com/sharkdp/fd) instead of
-    # the default find command for listing path candidates.
-    export FZF_DEFAULT_COMMAND='fd --type f'
-
-    _fzf_compgen_path() {
-      fd --hidden --follow --exclude ".git" . "$1"
-    }
-
-    _fzf_compgen_dir() {
-      fd --type d --hidden --follow --exclude ".git" . "$1"
-    }
-
-  fi
-fi
-
-# }}} FZF #
 
