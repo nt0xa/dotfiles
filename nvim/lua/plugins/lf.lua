@@ -12,7 +12,7 @@ return {
         border = "rounded",
         highlights = {
           FloatBorder = { 
-            guifg = "#DFDFE0", 
+            guifg = "#DFDFE0", -- TODO: use color from colorscheme
           }
         },
       }

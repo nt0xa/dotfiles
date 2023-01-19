@@ -1,14 +1,14 @@
 return {
   {
     "neovim/nvim-lspconfig",
-    event = "BufReadPre",
+    event = "InsertEnter",
     dependencies = {
+      "nvim-lua/plenary.nvim",
       { "j-hui/fidget.nvim", config = true },
       { "smjonas/inc-rename.nvim", config = true },
-      "williamboman/mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-nvim-lsp-signature-help",
+      "jose-elias-alvarez/null-ls.nvim",
     },
     config = function(plugin, opts)
       local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
@@ -37,31 +37,37 @@ return {
         vim.keymap.set("n", "<localleader>f", function() vim.lsp.buf.format { async = true } end, bufopts)
       end
 
-      local servers = require("plugins.lsp.servers")
+      -- null-ls helpers
+      local null_ls = require("null-ls")
+      local code_actions = null_ls.builtins.code_actions
+      local diagnostics = null_ls.builtins.diagnostics
+      local formatting = null_ls.builtins.formatting
+      local hover = null_ls.builtins.hover
+      local completion = null_ls.builtins.completion
 
-      require("mason").setup()
-      require("mason-lspconfig").setup { ensure_installed = vim.tbl_keys(servers) }
+      -- lsp servers
+      local lsps = {}
 
-      local lspconfig = require "lspconfig"
+      -- null-ls sources
+      local null_ls_sources = {}
 
-      for _, lsp in ipairs(vim.tbl_keys(servers)) do
+      -- Golang
+      if vim.fn.executable("go") then
+        lsps["gopls"] = {}
+        table.insert(null_ls_sources, formatting.gofmt)
+        table.insert(null_ls_sources, formatting.goimports)
+      end
+
+      local lspconfig = require("lspconfig")
+
+      for _, lsp in ipairs(vim.tbl_keys(lsps)) do
         local opts = { on_attach = on_attach, capabilities = capabilities }
         lspconfig[lsp].setup(opts)
       end
+
+      null_ls.setup {
+        sources = null_ls_sources,
+      }
     end,
-  },
-  {
-    "williamboman/mason.nvim",
-    cmd = "Mason",
-  },
-  {
-    "jose-elias-alvarez/null-ls.nvim",
-    event = "BufReadPre",
-    dependencies = {
-      "nvim-lua/plenary.nvim"
-    },
-    config = function()
-      require("null-ls").setup()
-    end,
-  },
+  }
 }
