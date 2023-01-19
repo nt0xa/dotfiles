@@ -12,8 +12,9 @@
 
 !nvim
 !nvim/init.lua
-!nvim/colors
-!nvim/colors/xcode.vim
+!nvim/lua/config/*.lua
+!nvim/lua/plugins/*.lua
+!nvim/lua/plugins/lsp/*.lua
 !nvim/luasnippets
 !nvim/luasnippets/*.lua
 
