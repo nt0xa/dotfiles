@@ -4,6 +4,12 @@
 set nopreview
 set ratios 1
 
+# Prompt
+set promptfmt "\033[34;1m%d\033[0m"
+
+# No time
+set timefmt ""
+
 # }}} #
 
 # Commands {{{ #
@@ -28,5 +34,3 @@ map <enter> open
 map r :rename
 
 # }}} #
-
-# vim: fdm=fold
