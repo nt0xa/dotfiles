@@ -12,8 +12,11 @@
 
 !nvim
 !nvim/init.lua
+!nvim/lua
 !nvim/lua/config/*.lua
+!nvim/lua/plugins
 !nvim/lua/plugins/*.lua
+!nvim/lua/plugins/lsp
 !nvim/lua/plugins/lsp/*.lua
 !nvim/luasnippets
 !nvim/luasnippets/*.lua
