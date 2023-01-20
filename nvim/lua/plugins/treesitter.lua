@@ -7,6 +7,7 @@ return {
     },
     build = ":TSUpdate",
     event = "BufReadPost",
+    cmd = "TSUpdate",
     opts = {
       ensure_installed = {
         "bash",
@@ -22,6 +23,7 @@ return {
         "typescript",
         "yaml",
       },
+      sync_install = true,
       highlight = {
         enable = true,
       },
