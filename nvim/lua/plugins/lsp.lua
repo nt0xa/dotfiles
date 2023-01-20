@@ -2,6 +2,7 @@ return {
   {
     "neovim/nvim-lspconfig",
     event = "InsertEnter",
+    keys = { "<leader>l" },
     dependencies = {
       "nvim-lua/plenary.nvim",
       { "j-hui/fidget.nvim", config = true },
@@ -11,6 +12,8 @@ return {
       "jose-elias-alvarez/null-ls.nvim",
     },
     config = function(plugin, opts)
+      vim.keymap.set("n", "<leader>l", ":LspStart<CR>", { noremap = true, silent = true })
+
       local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
       local on_attach = function(client, bufnr)
