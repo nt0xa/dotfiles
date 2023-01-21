@@ -16,3 +16,6 @@ fish_style_pwd_dir_length = 1
 [cmd_duration]
 min_time = 5000
 format = '[$duration](yellow)'
+
+[git_branch]
+format = '[\($branch\)]($style) '
