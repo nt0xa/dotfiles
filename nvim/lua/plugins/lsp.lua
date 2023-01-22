@@ -55,10 +55,17 @@ return {
       local null_ls_sources = {}
 
       -- Golang
-      if vim.fn.executable("go") then
+      if vim.fn.filereadable("/.nvim-go") then
         lsps["gopls"] = {}
         table.insert(null_ls_sources, formatting.gofmt)
         table.insert(null_ls_sources, formatting.goimports)
+      end
+
+      -- Python
+      if vim.fn.filereadable("/.nvim-python") then
+        lsps["pylsp"] = {}
+        table.insert(null_ls_sources, diagnostics.mypy)
+        table.insert(null_ls_sources, formatting.black)
       end
 
       local lspconfig = require("lspconfig")
