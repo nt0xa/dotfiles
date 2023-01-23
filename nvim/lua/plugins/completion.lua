@@ -20,9 +20,6 @@ return {
       end
 
       cmp.setup {
-        completion = {
-          completeopt = "menu,menuone,noinsert",
-        },
         snippet = {
           expand = function(args)
             require("luasnip").lsp_expand(args.body)
@@ -35,7 +32,7 @@ return {
             elseif luasnip.expand_or_jumpable() then
               luasnip.expand_or_jump()
             elseif has_words_before() then
-              cmp.complete()
+              cmp.complete_common_string()
             else
               fallback()
             end
