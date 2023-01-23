@@ -1,8 +1,7 @@
 return {
   {
     "neovim/nvim-lspconfig",
-    event = "InsertEnter",
-    keys = { "<leader>l" },
+    lazy = false,
     dependencies = {
       "nvim-lua/plenary.nvim",
       { "j-hui/fidget.nvim", config = true },
@@ -38,6 +37,7 @@ return {
         vim.keymap.set("n", "<localleader>ca", vim.lsp.buf.code_action, bufopts)
         vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
         vim.keymap.set("n", "<localleader>f", function() vim.lsp.buf.format { async = true } end, bufopts)
+        vim.keymap.set("n", "<localleader>e", vim.diagnostic.open_float, bufopts)
       end
 
       -- null-ls helpers
@@ -55,17 +55,18 @@ return {
       local null_ls_sources = {}
 
       -- Golang
-      if vim.fn.filereadable("/.nvim-go") then
+      if vim.fn.filereadable("/.nvim-go") == 1 then
         lsps["gopls"] = {}
         table.insert(null_ls_sources, formatting.gofmt)
         table.insert(null_ls_sources, formatting.goimports)
       end
 
       -- Python
-      if vim.fn.filereadable("/.nvim-python") then
+      if vim.fn.filereadable("/.nvim-python") == 1 then
         lsps["pylsp"] = {}
         table.insert(null_ls_sources, diagnostics.mypy)
         table.insert(null_ls_sources, formatting.black)
+        table.insert(null_ls_sources, formatting.reorder_python_imports)
       end
 
       local lspconfig = require("lspconfig")
