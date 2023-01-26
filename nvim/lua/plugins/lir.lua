@@ -12,8 +12,12 @@ return {
     require'lir'.setup {
       show_hidden_files = false,
       mappings = {
-        ['l']     = actions.edit,
-        ['<CR>']  = actions.edit,
+        ['l']     = function()
+          actions.edit({ modified_split_command = "edit" })
+        end,
+        ['<CR>']  = function()
+          actions.edit({ modified_split_command = "edit" })
+        end,
 
         ['h']     = actions.up,
         ['q']     = actions.quit,
