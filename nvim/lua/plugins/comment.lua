@@ -4,7 +4,7 @@ return {
     dependencies = {
       "JoosepAlviste/nvim-ts-context-commentstring"
     },
-    keys = { "gc", "gcc", "gbc" },
+    keys = { { "gc", mode = "v" }, "gcc" },
     config = function()
       require("Comment").setup()
     end,
