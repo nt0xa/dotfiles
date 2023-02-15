@@ -69,10 +69,25 @@ return {
         table.insert(null_ls_sources, formatting.reorder_python_imports)
       end
 
+      -- Javascript / Typescript / HTML / CSS
+      if vim.fn.filereadable("/.nvim-web") == 1 then
+        lsps["tsserver"] = {}
+        lsps["html"] = {
+          init_options = {
+            provideFormatter = false
+          }
+        }
+        lsps["cssls"] = {}
+        lsps["tailwindcss"] = {}
+        table.insert(null_ls_sources, diagnostics.tcs)
+        table.insert(null_ls_sources, formatting.prettier)
+      end
+
       local lspconfig = require("lspconfig")
 
       for _, lsp in ipairs(vim.tbl_keys(lsps)) do
-        local opts = { on_attach = on_attach, capabilities = capabilities }
+        local common = { on_attach = on_attach, capabilities = capabilities }
+        local opts = vim.tbl_deep_extend("force", common, lsps[lsp])
         lspconfig[lsp].setup(opts)
       end
 
