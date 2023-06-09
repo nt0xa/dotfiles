@@ -52,6 +52,7 @@ return {
       local lsps = {}
 
       -- null-ls sources
+      -- https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
       local null_ls_sources = {}
 
       -- Golang
@@ -81,6 +82,12 @@ return {
         lsps["tailwindcss"] = {}
         table.insert(null_ls_sources, diagnostics.tcs)
         table.insert(null_ls_sources, formatting.prettier)
+      end
+
+      -- Rust
+      if vim.fn.filereadable("/.nvim-rust") == 1 then
+        lsps["rust_analyzer"] = {}
+        table.insert(null_ls_sources, formatting.rustfmt)
       end
 
       local lspconfig = require("lspconfig")
