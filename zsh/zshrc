@@ -121,6 +121,7 @@ bindkey '^g' edit-command-line
 # Aliases & Functions {{{ #
 
 alias v='nvim'
+alias today="date '+%Y-%m-%d'"
 
 # }}} Aliases & Functions #
 
