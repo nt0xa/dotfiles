@@ -4,38 +4,42 @@ return {
     lazy = false,
     dependencies = {
       "nvim-lua/plenary.nvim",
-      { "j-hui/fidget.nvim", config = true },
-      { "smjonas/inc-rename.nvim", config = true },
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-nvim-lsp-signature-help",
       "jose-elias-alvarez/null-ls.nvim",
+      "williamboman/mason.nvim",
+		  "williamboman/mason-lspconfig.nvim",
     },
     config = function(plugin, opts)
+      require("mason").setup()
+      require("mason-lspconfig").setup({
+        ensure_installed = {
+          "gopls",
+          "rust_analyzer",
+          "tsserver"
+        },
+      })
+
       vim.keymap.set("n", "<leader>l", ":LspStart<CR>", { noremap = true, silent = true })
 
       local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
       local on_attach = function(client, bufnr)
         -- Enable completion triggered by <c-x><c-o>
-        vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+        -- vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
         -- Mappings.
         -- See `:help vim.lsp.*` for documentation on any of the below functions
         local bufopts = { noremap=true, silent=true, buffer=bufnr }
         vim.keymap.set("n", "gD", vim.lsp.buf.declaration, bufopts)
         vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
-        vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
         vim.keymap.set("n", "gi", vim.lsp.buf.implementation, bufopts)
+        vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
+        vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
         vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, bufopts)
-        vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, bufopts)
-        vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, bufopts)
-        vim.keymap.set("n", "<space>wl", function()
-          print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-        end, bufopts)
         vim.keymap.set("n", "<localleader>D", vim.lsp.buf.type_definition, bufopts)
         vim.keymap.set("n", "<localleader>rn", vim.lsp.buf.rename, bufopts)
         vim.keymap.set("n", "<localleader>ca", vim.lsp.buf.code_action, bufopts)
-        vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
         vim.keymap.set("n", "<localleader>f", function() vim.lsp.buf.format { async = true } end, bufopts)
         vim.keymap.set("n", "<localleader>e", vim.diagnostic.open_float, bufopts)
       end
@@ -56,14 +60,14 @@ return {
       local null_ls_sources = {}
 
       -- Golang
-      if vim.fn.filereadable("/.nvim-go") == 1 then
+      if vim.fn.executable("go") == 1 then
         lsps["gopls"] = {}
         table.insert(null_ls_sources, formatting.gofmt)
         table.insert(null_ls_sources, formatting.goimports)
       end
 
       -- Python
-      if vim.fn.filereadable("/.nvim-python") == 1 then
+      if vim.fn.executable("python3") == 1 then
         lsps["pylsp"] = {}
         table.insert(null_ls_sources, diagnostics.mypy)
         table.insert(null_ls_sources, formatting.black)
@@ -71,7 +75,7 @@ return {
       end
 
       -- Javascript / Typescript / HTML / CSS
-      if vim.fn.filereadable("/.nvim-web") == 1 then
+      if vim.fn.executable("node") == 1 then
         lsps["tsserver"] = {}
         lsps["html"] = {
           init_options = {
@@ -85,7 +89,7 @@ return {
       end
 
       -- Rust
-      if vim.fn.filereadable("/.nvim-rust") == 1 then
+      if vim.fn.executable("cargo") == 1 then
         lsps["rust_analyzer"] = {}
         table.insert(null_ls_sources, formatting.rustfmt)
       end
