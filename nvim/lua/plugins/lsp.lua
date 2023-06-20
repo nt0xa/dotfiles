@@ -16,7 +16,11 @@ return {
         ensure_installed = {
           "gopls",
           "rust_analyzer",
-          "tsserver"
+          "pylsp",
+          "tsserver",
+          "html",
+          "cssls",
+          "tailwindcss",
         },
       })
 
