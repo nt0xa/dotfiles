@@ -19,6 +19,7 @@ require("lazy").setup {
   defaults = { lazy = true, version = "*" },
   install = { missing = true, colorscheme = { "nord" } },
   dev = { path = vim.fn.stdpath("config") .. "local" },
+  change_detection = { enabled = false },
   performance = {
     rtp = {
       disabled_plugins = {
