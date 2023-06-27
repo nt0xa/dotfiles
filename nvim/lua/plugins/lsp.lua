@@ -30,8 +30,22 @@ return {
 
       local on_attach = function(client, bufnr)
         -- Diagnostics window borders.
+        local border = "rounded"
+
+        vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+          vim.lsp.handlers.hover, {
+            border = border
+          }
+        )
+
+        vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+          vim.lsp.handlers.signature_help, {
+            border = border
+          }
+        )
+
         vim.diagnostic.config {     
-          float = { border = "rounded" }, 
+          float = { border = border }, 
         }
 
         -- Mappings.
@@ -43,11 +57,14 @@ return {
         vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
         vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
         vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, bufopts)
-        vim.keymap.set("n", "<localleader>D", vim.lsp.buf.type_definition, bufopts)
-        vim.keymap.set("n", "<localleader>rn", vim.lsp.buf.rename, bufopts)
-        vim.keymap.set("n", "<localleader>ca", vim.lsp.buf.code_action, bufopts)
+        vim.keymap.set("n", "<localleader>d", vim.lsp.buf.type_definition, bufopts)
+        vim.keymap.set("n", "<localleader>r", vim.lsp.buf.rename, bufopts)
+        vim.keymap.set("n", "<localleader>a", vim.lsp.buf.code_action, bufopts)
         vim.keymap.set("n", "<localleader>f", function() vim.lsp.buf.format { async = true } end, bufopts)
         vim.keymap.set("n", "<localleader>e", vim.diagnostic.open_float, bufopts)
+        vim.keymap.set("n", "<localleader>n", vim.diagnostic.goto_next, bufopts)
+        vim.keymap.set("n", "<localleader>p", vim.diagnostic.goto_prev, bufopts)
+
       end
 
       -- null-ls helpers
