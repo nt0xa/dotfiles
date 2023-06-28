@@ -7,6 +7,7 @@ return {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-nvim-lsp-signature-help",
       "jose-elias-alvarez/null-ls.nvim",
+      "jay-babu/mason-null-ls.nvim",
       "williamboman/mason.nvim",
 		  "williamboman/mason-lspconfig.nvim",
     },
@@ -14,15 +15,38 @@ return {
       require("mason").setup()
       require("mason-lspconfig").setup({
         ensure_installed = {
+          -- Golang
           "gopls",
+
+          -- Rust
           "rust_analyzer",
+
+          -- Python
           "pylsp",
+
+          -- Web
           "tsserver",
           "html",
           "cssls",
           "tailwindcss",
         },
       })
+
+      require("mason-null-ls").setup({
+        ensure_installed = {
+          -- Golang
+          "goimports",
+
+          -- Python
+          "mypy",
+          "black",
+          "reorder_python_imports",
+
+          -- Web
+          "prettier",
+        }
+      })
+
 
       vim.keymap.set("n", "<leader>l", ":LspStart<CR>", { noremap = true, silent = true })
 
@@ -103,7 +127,7 @@ return {
         }
         lsps["cssls"] = {}
         lsps["tailwindcss"] = {}
-        table.insert(null_ls_sources, diagnostics.tcs)
+        table.insert(null_ls_sources, diagnostics.tsc)
         table.insert(null_ls_sources, formatting.prettier)
       end
 
