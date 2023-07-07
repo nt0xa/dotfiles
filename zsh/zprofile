@@ -1,0 +1,19 @@
+# Keep only the first occurrence of each duplicated value
+typeset -U path
+path=(
+  $HOME/.local/bin
+  /opt/homebrew/bin
+  $path
+)
+
+fpath=(
+  $XDG_DATA_HOME/zsh/completions
+  $fpath
+)
+
+if [ -f "$HOME/.private" ]; then
+  # Tokens, secretes, etc.
+  source "$HOME/.private"
+fi
+
+# vim: ft=zsh

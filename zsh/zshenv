@@ -2,32 +2,13 @@
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
-
-# XDG
-source "$XDG_CONFIG_HOME/zsh/xdg"
-
-if [ -f "$HOME/.private" ]; then
-  # Tokens, secretes, etc.
-  source "$HOME/.private"
-fi
-
-# Keep only the first occurrence of each duplicated value
-typeset -U path
-path=(
-  $HOME/.local/bin
-  /opt/homebrew/bin
-  $path
-)
-
-fpath=(
-  $XDG_DATA_HOME/zsh/completions
-  $fpath
-)
-
 export LANG='en_US.UTF-8'
 export LC_ALL=$LANG
 export PAGER='less'
 export EDITOR='nvim'
 export VISUAL='nvim'
+
+# XDG
+source "$XDG_CONFIG_HOME/zsh/xdg"
 
 # vim: ft=zsh
