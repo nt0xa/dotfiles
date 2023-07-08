@@ -21,7 +21,9 @@ return {
         "lua",
         "python",
         "typescript",
+        "tsx",
         "yaml",
+        "json"
       },
       sync_install = true,
       highlight = {
