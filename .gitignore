@@ -16,6 +16,8 @@
 !nvim/lua/plugins/*.lua
 !nvim/luasnippets
 !nvim/luasnippets/*.lua
+!nvim/ftplugin
+!nvim/ftplugin/*.lua
 
 !tmux
 !tmux/tmux.conf
