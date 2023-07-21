@@ -88,8 +88,6 @@ return {
       context_commentstring = { enable = true },
     },
     config = function(_, opts)
-      require("nvim-treesitter.configs").setup(opts)
-
       -- add golang template parser grammar
       local parser_config = require"nvim-treesitter.parsers".get_parser_configs()
       parser_config.gotmpl = {
@@ -100,6 +98,8 @@ return {
         filetype = "gotmpl",
         used_by = {"gohtmltmpl", "gotexttmpl", "gotmpl", "yaml", "sql"}
       }
+
+      require("nvim-treesitter.configs").setup(opts)
     end,
   }
 }
