@@ -24,6 +24,7 @@ return {
         "tsx",
         "yaml",
         "json",
+        "jsonc",
         "gotmpl"
       },
       sync_install = true,
