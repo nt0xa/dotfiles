@@ -22,20 +22,23 @@ vim.keymap.set("n", "gv", "`[v`]", opts)
 
 -- Go to the start of the line.
 vim.keymap.set("i", "<C-a>", "<C-o>^", opts)
-vim.keymap.set("c", "<C-a>", "<C-o>0", opts)
+vim.keymap.set("c", "<C-a>", "<Home>")
 
 -- Go to the end of the line.
 vim.keymap.set("i", "<C-e>", "<C-o>$", opts)
+vim.keymap.set("c", "<C-e>", "<End>")
 
 -- Go forward.
 vim.keymap.set("i", "<C-f>", "<Right>", opts)
-vim.keymap.set("c", "<C-f>", "<Right>", opts)
+vim.keymap.set("c", "<C-f>", "<Right>")
 
 -- Go back.
 vim.keymap.set("i", "<C-b>", "<Left>", opts)
+vim.keymap.set("c", "<C-b>", "<Left>")
 
 -- Paste.
 vim.keymap.set("i", "<C-y>", "<C-o>p", opts)
 
 -- Del.
 vim.keymap.set("i", "<C-d>", "<Delete>", opts)
+vim.keymap.set("c", "<C-d>", "<Delete>")
