@@ -84,7 +84,7 @@ return {
     vim.keymap.set("n", "<leader>f", function() builtin.find_files(opts) end, {})
     vim.keymap.set("n", "<leader>g", function() builtin.live_grep(opts) end, {})
     vim.keymap.set("n", "<leader>b", function() builtin.buffers(opts) end, {})
-    vim.keymap.set("n", "<leader>s", function() builtin.lsp_document_symbols(opts) end, {})
+    vim.keymap.set("n", "<leader>s", function() builtin.lsp_document_symbols(themes.get_dropdown({})) end, {})
     vim.keymap.set("n", "<space>d",  function() telescope.extensions.file_browser.file_browser(opts) end)
   end
 }
