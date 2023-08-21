@@ -20,4 +20,23 @@ export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
 # Android
 export ANDROID_HOME="$XDG_DATA_HOME"/android
 
+# SQLite
+export SQLITE_HISTORY="$XDG_CACHE_HOME"/sqlite_history
+
+# Sage
+export DOT_SAGE="$XDG_CONFIG_HOME"/sage
+
+# Python
+export PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/pythonrc"
+
+# Tempinfo
+export TERMINFO="$XDG_DATA_HOME"/terminfo                                                                  
+export TERMINFO_DIRS="$XDG_DATA_HOME"/terminfo:/usr/share/terminfo 
+
+# Less
+export LESSHISTFILE="$XDG_CACHE_HOME"/less/history 
+
+# JS
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/config
+
 # vim: ft=zsh
