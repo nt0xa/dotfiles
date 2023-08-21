@@ -7,6 +7,9 @@ export GOPATH="$XDG_DATA_HOME"/go
 # Rust
 export CARGO_HOME="$XDG_DATA_HOME"/rust/cargo
 
+# OCaml
+export OPAMROOT="$XDG_DATA_HOME/opam"
+
 # Vagrant
 export VAGRANT_HOME="$XDG_DATA_HOME"/vagrant
 export VAGRANT_ALIAS_FILE="$XDG_DATA_HOME"/vagrant/aliases
@@ -16,6 +19,5 @@ export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
 
 # Android
 export ANDROID_HOME="$XDG_DATA_HOME"/android
-
 
 # vim: ft=zsh
