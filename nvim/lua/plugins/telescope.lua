@@ -74,17 +74,17 @@ return {
     telescope.load_extension("file_browser")
 
     local themes = require('telescope.themes')
-    local opts = themes.get_dropdown({})
     local builtin = require("telescope.builtin")
 
-    vim.keymap.set("n", "gr", function() builtin.lsp_references(opts) end, {})
-    vim.keymap.set("n", "gd", function() builtin.lsp_definitions(opts) end, {})
-    vim.keymap.set("n", "gi", function() builtin.lsp_implementations(opts) end, {})
+    vim.keymap.set("n", "gr", function() builtin.lsp_references(themes.get_dropdown({})) end, {})
+    vim.keymap.set("n", "gd", function() builtin.lsp_definitions(themes.get_dropdown({})) end, {})
+    vim.keymap.set("n", "gi", function() builtin.lsp_implementations(themes.get_dropdown({})) end, {})
 
-    vim.keymap.set("n", "<leader>f", function() builtin.find_files(opts) end, {})
-    vim.keymap.set("n", "<leader>g", function() builtin.live_grep(opts) end, {})
-    vim.keymap.set("n", "<leader>b", function() builtin.buffers(opts) end, {})
+    vim.keymap.set("n", "<leader>f", function() builtin.find_files(themes.get_dropdown({})) end, {})
+    vim.keymap.set("n", "<leader>g", function() builtin.live_grep(themes.get_dropdown({})) end, {})
+    vim.keymap.set("n", "<leader>b", function() builtin.buffers(themes.get_dropdown({})) end, {})
     vim.keymap.set("n", "<leader>s", function() builtin.lsp_document_symbols(themes.get_dropdown({})) end, {})
-    vim.keymap.set("n", "<space>d",  function() telescope.extensions.file_browser.file_browser(opts) end)
+    vim.keymap.set("n", "<leader>a", function() builtin.lsp_dynamic_workspace_symbols(themes.get_dropdown({})) end, {})
+    vim.keymap.set("n", "<leader>d",  function() telescope.extensions.file_browser.file_browser(themes.get_dropdown({})) end)
   end
 }
