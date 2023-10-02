@@ -59,6 +59,8 @@ return {
               ["n"] = fb_actions.create,
               ["d"] = fb_actions.remove,
               ["r"] = fb_actions.rename,
+              ["c"] = fb_actions.copy,
+              ["m"] = fb_actions.move,
               ["h"] = fb_actions.goto_parent_dir,
               ["l"] = actions.select_default,
               ["."] = fb_actions.toggle_hidden,
