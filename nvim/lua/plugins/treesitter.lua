@@ -25,7 +25,8 @@ return {
         "yaml",
         "json",
         "jsonc",
-        "gotmpl"
+        "gotmpl",
+        "terraform",
       },
       sync_install = true,
       highlight = {
