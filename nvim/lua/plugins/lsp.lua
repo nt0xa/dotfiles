@@ -15,6 +15,9 @@ return {
       require("mason").setup()
       require("mason-lspconfig").setup({
         ensure_installed = {
+          -- Shell
+          "bashls",
+
           -- Golang
           "gopls",
 
@@ -34,6 +37,9 @@ return {
 
       require("mason-null-ls").setup({
         ensure_installed = {
+          -- Shell
+          "shfmt",
+
           -- Golang
           "goimports",
 
@@ -101,6 +107,13 @@ return {
       -- null-ls sources
       -- https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
       local null_ls_sources = {}
+
+      -- Shell
+      if vim.fn.executable("node") == 1 then
+        lsps["bashls"] = {}
+        table.insert(null_ls_sources, formatting.shfmt)
+      end
+
 
       -- Golang
       if vim.fn.executable("go") == 1 then
