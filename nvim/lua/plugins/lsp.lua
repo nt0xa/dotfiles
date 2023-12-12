@@ -6,10 +6,10 @@ return {
       "nvim-lua/plenary.nvim",
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-nvim-lsp-signature-help",
-      "jose-elias-alvarez/null-ls.nvim",
+      "nvimtools/none-ls.nvim",
       "jay-babu/mason-null-ls.nvim",
       "williamboman/mason.nvim",
-		  "williamboman/mason-lspconfig.nvim",
+      "williamboman/mason-lspconfig.nvim",
     },
     config = function(plugin, opts)
       require("mason").setup()
