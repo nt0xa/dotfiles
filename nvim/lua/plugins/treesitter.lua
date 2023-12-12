@@ -32,6 +32,7 @@ return {
       sync_install = true,
       highlight = {
         enable = true,
+        additional_vim_regex_highlighting = false,
       },
       indent = {
         enable = true,
@@ -85,10 +86,6 @@ return {
           },
         },
       },
-
-      -- nvim-ts-context-commentstring
-      -- this should be used with commenting plugin like "numToStr/Comment.nvim"
-      context_commentstring = { enable = true },
     },
     config = function(_, opts)
       -- add golang template parser grammar
