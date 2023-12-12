@@ -123,6 +123,7 @@ bindkey '^g' edit-command-line
 alias v='nvim'
 alias today="date '+%Y-%m-%d'"
 alias now="date '+%Y-%m-%d_%H-%M'"
+alias uuid="uuidgen | tr '[A-Z]' '[a-z]'"
 
 # }}} Aliases & Functions #
 
