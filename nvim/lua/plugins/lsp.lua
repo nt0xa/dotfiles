@@ -32,6 +32,9 @@ return {
           "html",
           "cssls",
           "tailwindcss",
+
+          -- PHP
+          "intelephense",
         },
       })
 
@@ -114,7 +117,6 @@ return {
         table.insert(null_ls_sources, formatting.shfmt)
       end
 
-
       -- Golang
       if vim.fn.executable("go") == 1 then
         lsps["gopls"] = {}
@@ -148,6 +150,12 @@ return {
       if vim.fn.executable("cargo") == 1 then
         lsps["rust_analyzer"] = {}
         table.insert(null_ls_sources, formatting.rustfmt)
+      end
+
+      -- Rust
+      if vim.fn.executable("php") == 1 then
+        lsps["intelephense"] = {}
+        table.insert(null_ls_sources, formatting.prettier)
       end
 
       local lspconfig = require("lspconfig")

@@ -27,6 +27,7 @@ return {
         "jsonc",
         "gotmpl",
         "terraform",
+        "php",
       },
       sync_install = true,
       highlight = {
