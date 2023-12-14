@@ -121,33 +121,22 @@ bindkey '^g' edit-command-line
 # Aliases & Functions {{{ #
 
 alias v='nvim'
+
+if (( $+commands[exa] )); then
+  alias ls='exa'
+  alias ll='exa -l'
+  alias tree='exa --tree'
+fi
+
+if (( $+commands[exa] )); then
+  alias cat='bat'
+fi
+
 alias today="date '+%Y-%m-%d'"
 alias now="date '+%Y-%m-%d_%H-%M'"
 alias uuid="uuidgen | tr '[A-Z]' '[a-z]'"
 
 # }}} Aliases & Functions #
-
-# Dircolors {{{ #
-
-if (( $+commands[gdircolors] )); then
-  dircolors_cmd='gdircolors'
-elif (( $+commands[dircolors] )); then
-  dircolors_cmd='dircolors'
-fi
-
-if [[ ! -z $dircolors_cmd ]]; then
-  eval "$($dircolors_cmd --sh "$XDG_CONFIG_HOME/dircolors/dircolors")"
-fi
-
-if (( $+commands[gls] )); then
-  ls_cmd='gls'
-else
-  ls_cmd='ls'
-fi
-
-alias ls="$ls_cmd --color=auto --group-directories-first"
-
-# }}} Dircolors #
 
 # Cursor {{{ #
 
