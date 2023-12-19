@@ -89,7 +89,7 @@ return {
         vim.keymap.set("n", "<localleader>d", vim.lsp.buf.type_definition, bufopts)
         vim.keymap.set("n", "<localleader>r", vim.lsp.buf.rename, bufopts)
         vim.keymap.set("n", "<localleader>a", vim.lsp.buf.code_action, bufopts)
-        vim.keymap.set("n", "<localleader>f", function() vim.lsp.buf.format { async = true } end, bufopts)
+        vim.keymap.set("n", "<localleader>f", function() vim.lsp.buf.format { async = false } end, bufopts)
         vim.keymap.set("n", "<localleader>e", vim.diagnostic.open_float, bufopts)
         vim.keymap.set("n", "<localleader>n", vim.diagnostic.goto_next, bufopts)
         vim.keymap.set("n", "<localleader>p", vim.diagnostic.goto_prev, bufopts)
