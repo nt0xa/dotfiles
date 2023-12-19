@@ -121,6 +121,9 @@ bindkey '^g' edit-command-line
 # Aliases & Functions {{{ #
 
 alias v='nvim'
+alias today="date '+%Y-%m-%d'"
+alias now="date '+%Y-%m-%d_%H-%M'"
+alias uuid="uuidgen | tr '[A-Z]' '[a-z]'"
 
 if (( $+commands[exa] )); then
   alias ls='exa'
@@ -132,9 +135,13 @@ if (( $+commands[exa] )); then
   alias cat='bat'
 fi
 
-alias today="date '+%Y-%m-%d'"
-alias now="date '+%Y-%m-%d_%H-%M'"
-alias uuid="uuidgen | tr '[A-Z]' '[a-z]'"
+if (( $+commands[bat] )); then
+  alias cat='bat'
+fi
+
+if (( $+commands[jq] )); then
+  alias jwt="jq -R 'split(\".\") | .[1] | @base64d | fromjson | if .exp then (.expStr = (.exp|todate)) else . end'"
+fi
 
 # }}} Aliases & Functions #
 
