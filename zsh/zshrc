@@ -143,6 +143,43 @@ if (( $+commands[jq] )); then
   alias jwt="jq -R 'split(\".\") | .[1] | @base64d | fromjson | if .exp then (.expStr = (.exp|todate)) else . end'"
 fi
 
+if (( $+commands[php] )); then
+  urldecode() {
+    php -R 'echo urldecode($argn)."\n";'
+  }
+
+  urlencode() {
+    php -R 'echo urlencode($argn)."\n";'
+  }
+fi
+
+if (( $+commands[python3] )); then
+  hex() {
+    python3 -c 'import sys;import codecs;h=codecs.getencoder("hex");hex=h(sys.stdin.read().rstrip().encode());print(hex[0].decode())'
+  }
+
+  unhex() {
+    python3 -c 'import sys;import codecs;h=codecs.getdecoder("hex");hex=h(sys.stdin.read().rstrip().encode());print(hex[0].decode())'
+  }
+fi
+
+# macOS
+alias flushdns="sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder"
+
+listening() {
+	printf '[*] Listening ports\n\n' >&2
+
+	sudo netstat -anvp tcp|grep LISTEN | while read -r line; do
+		port=`echo $line | awk '{print $4}' | awk -F '.' '{print $NF}'`	
+		pid=`echo $line | awk '{print  $9}'`
+		exe=`sudo ps -o comm -p $pid | grep -v COMM`
+		exe=`which $exe`
+		
+		printf "$exe\t$port\n"
+	done
+}
+
+
 # }}} Aliases & Functions #
 
 # Cursor {{{ #
