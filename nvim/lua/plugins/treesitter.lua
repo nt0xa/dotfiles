@@ -1,6 +1,7 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
+    version = "*",
     dependencies = {
       "nvim-treesitter/nvim-treesitter-textobjects",
       "JoosepAlviste/nvim-ts-context-commentstring"
@@ -28,6 +29,8 @@ return {
         "gotmpl",
         "terraform",
         "php",
+        "vim",
+        "vimdoc",
       },
       sync_install = true,
       highlight = {

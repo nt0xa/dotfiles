@@ -16,7 +16,7 @@ require("lazy").setup {
   spec = {
     { import = "plugins" },
   },
-  defaults = { lazy = true, version = "*" },
+  defaults = { lazy = true, version = nil },
   install = { missing = true, colorscheme = { "nord" } },
   dev = { path = vim.fn.stdpath("config") .. "local" },
   change_detection = { enabled = false },

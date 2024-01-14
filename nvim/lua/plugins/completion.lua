@@ -21,8 +21,7 @@ return {
       cmp.setup {
         window = {
           completion = cmp.config.window.bordered(),
-          -- enable when overlapping windows is fixed.
-          documentation = cmp.config.disable,
+          documentation = cmp.config.window.bordered(),
         },
         preselect = cmp.PreselectMode.None,
         snippet = {
@@ -30,7 +29,20 @@ return {
             require("luasnip").lsp_expand(args.body)
           end,
         },
+        view = {
+          docs = {
+            -- Hide docs by default.
+            auto_open = false
+          }
+        },
         mapping = cmp.mapping.preset.insert({
+          ['<C-g>'] = function()
+            if cmp.visible_docs() then
+              cmp.close_docs()
+            else
+              cmp.open_docs()
+            end
+          end,
           ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_next_item()
