@@ -1,8 +1,7 @@
 return {
   {
     "hrsh7th/nvim-cmp",
-    event = "InsertEnter",
-    keys = { ":" },
+    lazy = false,
     dependencies = {
       "hrsh7th/cmp-nvim-lsp", -- completions from LSP
       "hrsh7th/cmp-buffer", -- completions from current buffer words
@@ -22,7 +21,8 @@ return {
       cmp.setup {
         window = {
           completion = cmp.config.window.bordered(),
-          documentation = cmp.config.window.bordered(),
+          -- enable when overlapping windows is fixed.
+          documentation = cmp.config.disable,
         },
         preselect = cmp.PreselectMode.None,
         snippet = {
@@ -56,8 +56,8 @@ return {
           ["<C-e>"] = cmp.mapping.confirm({ select = false }),
         }),
         sources = cmp.config.sources {
-          { name = "nvim_lsp_signature_help" },
           { name = "nvim_lsp" },
+          { name = "nvim_lsp_signature_help" },
           { name = "luasnip" },
           { name = "buffer" },
           { name = "path" },
@@ -87,6 +87,7 @@ return {
   },
   {
     "L3MON4D3/LuaSnip",
+    lazy = false,
     config = function()
       require("luasnip.loaders.from_lua").lazy_load()
 
