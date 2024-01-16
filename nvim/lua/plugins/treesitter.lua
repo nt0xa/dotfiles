@@ -4,7 +4,8 @@ return {
     version = "*",
     dependencies = {
       "nvim-treesitter/nvim-treesitter-textobjects",
-      "JoosepAlviste/nvim-ts-context-commentstring"
+      "JoosepAlviste/nvim-ts-context-commentstring",
+      "vrischmann/tree-sitter-templ",
     },
     build = ":TSUpdate",
     event = "BufReadPost",
@@ -27,12 +28,11 @@ return {
         "json",
         "jsonc",
         "gotmpl",
+        "templ",
         "terraform",
         "php",
-        "vim",
-        "vimdoc",
       },
-      sync_install = true,
+      sync_install = false,
       highlight = {
         enable = true,
         additional_vim_regex_highlighting = false,
