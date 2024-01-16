@@ -33,6 +33,7 @@ return {
           "html",
           "cssls",
           "tailwindcss",
+          "htmx",
 
           -- PHP
           "intelephense",
@@ -140,10 +141,15 @@ return {
         lsps["html"] = {
           init_options = {
             provideFormatter = false
-          }
+          },
+          filetypes = { "html", "templ" }
         }
         lsps["cssls"] = {}
-        lsps["tailwindcss"] = {}
+        lsps["tailwindcss"] = {
+          filetypes = { "templ", "javascript", "typescript", "react" },
+          init_options = { userLanguages = { templ = "html" } },
+        }
+        lsps["htmx"] = {}
         table.insert(null_ls_sources, diagnostics.tsc)
         table.insert(null_ls_sources, formatting.prettier)
       end
