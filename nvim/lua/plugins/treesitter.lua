@@ -28,7 +28,6 @@ return {
         "json",
         "jsonc",
         "gotmpl",
-        "templ",
         "terraform",
         "php",
       },
