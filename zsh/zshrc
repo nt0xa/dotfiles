@@ -126,9 +126,9 @@ alias now="date '+%Y-%m-%d_%H-%M'"
 alias uuid="uuidgen | tr '[A-Z]' '[a-z]'"
 
 if (( $+commands[exa] )); then
-  alias ls='exa'
-  alias ll='exa -l'
-  alias tree='exa --tree'
+  alias ls='exa --group-directories-first'
+  alias ll='exa --group-directories-first -l'
+  alias tree='exa --group-directories-first --tree'
 fi
 
 if (( $+commands[exa] )); then
