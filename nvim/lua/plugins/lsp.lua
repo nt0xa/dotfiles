@@ -26,7 +26,7 @@ return {
           "rust_analyzer",
 
           -- Python
-          "pylsp",
+          "pyright",
 
           -- Web
           "tsserver",
@@ -129,7 +129,7 @@ return {
 
       -- Python
       if vim.fn.executable("python3") == 1 then
-        lsps["pylsp"] = {}
+        lsps["pyright"] = {}
         table.insert(null_ls_sources, diagnostics.mypy)
         table.insert(null_ls_sources, formatting.black)
         table.insert(null_ls_sources, formatting.reorder_python_imports)
