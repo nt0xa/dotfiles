@@ -48,8 +48,8 @@ return {
           hidden = false,
           grouped = true,
           previewer = false,
+          no_ignore = true,
           initial_mode = "normal",
-          layout_config = { height = 40 },
           git_status = false,
           hijack_netrw = true,
           mappings = {
