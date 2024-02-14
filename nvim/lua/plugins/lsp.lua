@@ -81,6 +81,8 @@ return {
 
         vim.diagnostic.config {     
           float = { border = border }, 
+          virtual_text = false,
+          signs = true
         }
 
         -- Mappings.
@@ -93,8 +95,8 @@ return {
         vim.keymap.set("n", "<localleader>a", vim.lsp.buf.code_action, bufopts)
         vim.keymap.set("n", "<localleader>f", function() vim.lsp.buf.format { async = false } end, bufopts)
         vim.keymap.set("n", "<localleader>e", vim.diagnostic.open_float, bufopts)
-        vim.keymap.set("n", "<localleader>n", vim.diagnostic.goto_next, bufopts)
-        vim.keymap.set("n", "<localleader>p", vim.diagnostic.goto_prev, bufopts)
+        vim.keymap.set("n", "gn", vim.diagnostic.goto_next, bufopts)
+        vim.keymap.set("n", "gp", vim.diagnostic.goto_prev, bufopts)
 
       end
 
