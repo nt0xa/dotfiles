@@ -125,7 +125,6 @@ return {
       if vim.fn.executable("go") == 1 then
         lsps["gopls"] = {}
         lsps["templ"] = {}
-        table.insert(null_ls_sources, formatting.gofmt)
         table.insert(null_ls_sources, formatting.goimports)
       end
 
