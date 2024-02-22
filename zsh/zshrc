@@ -32,6 +32,8 @@ zinit lucid has'docker' for \
   as'completion' is-snippet \
   https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
 
+zinit load atuinsh/atuin
+
 # }}} Plugins #
 
 # Completions {{{ #
