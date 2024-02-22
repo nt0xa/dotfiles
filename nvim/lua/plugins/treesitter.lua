@@ -103,5 +103,21 @@ return {
 
       require("nvim-treesitter.configs").setup(opts)
     end,
+  },
+  {
+    "Wansmer/treesj",
+    keys = { "<localleader>m", "<localleader>j", "<localleader>s" },
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    config = function()
+      local treesj = require("treesj")
+
+      treesj.setup({
+        use_default_keymaps = false,
+      })
+
+      vim.keymap.set("n", "<localleader>s", function() treesj.split() end, {})
+      vim.keymap.set("n", "<localleader>j", function() treesj.join() end, {})
+
+    end,
   }
 }
