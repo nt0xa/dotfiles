@@ -28,10 +28,6 @@ zi lucid wait for \
 zi lucid wait atload"ZI[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" blockf for \
   zsh-users/zsh-completions
 
-zinit lucid has'docker' for \
-  as'completion' is-snippet \
-  https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
-
 zinit load atuinsh/atuin
 
 # }}} Plugins #
