@@ -127,14 +127,10 @@ alias today="date '+%Y-%m-%d'"
 alias now="date '+%Y-%m-%d_%H-%M'"
 alias uuid="uuidgen | tr '[A-Z]' '[a-z]'"
 
-if (( $+commands[exa] )); then
-  alias ls='exa --group-directories-first'
-  alias ll='exa --group-directories-first -l'
-  alias tree='exa --group-directories-first --tree'
-fi
-
-if (( $+commands[exa] )); then
-  alias cat='bat'
+if (( $+commands[eza] )); then
+  alias ls='eza --group-directories-first'
+  alias ll='eza --group-directories-first -l'
+  alias tree='eza --group-directories-first --tree'
 fi
 
 if (( $+commands[bat] )); then
