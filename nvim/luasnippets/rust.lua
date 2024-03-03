@@ -26,4 +26,22 @@ return {
 println!("{:?}", $0);
 ]]
   ),
+  parse(
+    "modtests",
+  [[
+#[cfg(test)]
+mod tests {
+  $0
+}
+]]
+  ),
+  parse(
+    "test",
+  [[
+#[test]
+fn test_$1() {
+  $0
+}
+]]
+  ),
 }
