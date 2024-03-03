@@ -28,10 +28,6 @@ zi lucid wait for \
 zi lucid wait atload"ZI[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" blockf for \
   zsh-users/zsh-completions
 
-zinit lucid has'docker' for \
-  as'completion' is-snippet \
-  https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
-
 zinit load atuinsh/atuin
 
 # }}} Plugins #
@@ -127,14 +123,10 @@ alias today="date '+%Y-%m-%d'"
 alias now="date '+%Y-%m-%d_%H-%M'"
 alias uuid="uuidgen | tr '[A-Z]' '[a-z]'"
 
-if (( $+commands[exa] )); then
-  alias ls='exa --group-directories-first'
-  alias ll='exa --group-directories-first -l'
-  alias tree='exa --group-directories-first --tree'
-fi
-
-if (( $+commands[exa] )); then
-  alias cat='bat'
+if (( $+commands[eza] )); then
+  alias ls='eza --group-directories-first'
+  alias ll='eza --group-directories-first -l'
+  alias tree='eza --group-directories-first --tree'
 fi
 
 if (( $+commands[bat] )); then
