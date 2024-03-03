@@ -105,7 +105,7 @@ return {
       require("luasnip.loaders.from_lua").lazy_load()
 
       vim.api.nvim_create_user_command("LuaSnipEdit", function()
-        require("luasnip.loaders.from_lua").edit_snippet_files()
+	require("luasnip.loaders").edit_snippet_files()
       end, {})
     end,
   },
