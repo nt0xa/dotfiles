@@ -27,6 +27,7 @@ return {
 
           -- Python
           "pyright",
+          "ruff_lsp",
 
           -- Web
           "tsserver",
@@ -50,8 +51,6 @@ return {
 
           -- Python
           "mypy",
-          "black",
-          "reorder_python_imports",
 
           -- Web
           "prettier",
@@ -131,9 +130,8 @@ return {
       -- Python
       if vim.fn.executable("python3") == 1 then
         lsps["pyright"] = {}
+        lsps["ruff_lsp"] = {}
         table.insert(null_ls_sources, diagnostics.mypy)
-        table.insert(null_ls_sources, formatting.black)
-        table.insert(null_ls_sources, formatting.reorder_python_imports)
       end
 
       -- Javascript / Typescript / HTML / CSS
@@ -151,14 +149,12 @@ return {
           init_options = { userLanguages = { templ = "html" } },
         }
         lsps["htmx"] = {}
-        table.insert(null_ls_sources, diagnostics.tsc)
         table.insert(null_ls_sources, formatting.prettier)
       end
 
       -- Rust
       if vim.fn.executable("cargo") == 1 then
         lsps["rust_analyzer"] = {}
-        table.insert(null_ls_sources, formatting.rustfmt)
       end
 
       -- Rust
