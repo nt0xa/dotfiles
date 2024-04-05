@@ -45,4 +45,5 @@ if err != nil {
 ]]
   ),
   parse("pl", "fmt.Println($0)"),
+  parse("pr", "fmt.Printf(\"%+v\\n\", $0)"),
 }
