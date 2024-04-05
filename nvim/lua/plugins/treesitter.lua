@@ -30,6 +30,7 @@ return {
         "gotmpl",
         "terraform",
         "php",
+        "graphql",
       },
       sync_install = false,
       highlight = {
