@@ -27,7 +27,7 @@ println!("{:?}", $0);
 ]]
   ),
   parse(
-    "modtests",
+    "modt",
   [[
 #[cfg(test)]
 mod tests {
@@ -42,6 +42,12 @@ mod tests {
 fn test_$1() {
   $0
 }
+]]
+  ),
+  parse(
+    "dd",
+  [[
+#[derive(Debug)]
 ]]
   ),
 }
