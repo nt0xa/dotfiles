@@ -8,6 +8,7 @@ path=(
 
 fpath=(
   $XDG_DATA_HOME/zsh/completions
+  /opt/homebrew/share/zsh/site-functions
   $fpath
 )
 
