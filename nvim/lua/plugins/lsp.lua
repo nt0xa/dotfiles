@@ -49,6 +49,7 @@ return {
 
           -- Golang
           "goimports",
+          "gomodifytags",
 
           -- Python
           "mypy",
@@ -127,6 +128,7 @@ return {
         lsps["templ"] = {}
         lsps["golangci_lint_ls"] = {}
         table.insert(null_ls_sources, formatting.goimports)
+        table.insert(null_ls_sources, code_actions.gomodifytags)
       end
 
       -- Python
