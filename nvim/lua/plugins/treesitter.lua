@@ -1,13 +1,12 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    version = "*",
+    version = "v.*",
     dependencies = {
       "nvim-treesitter/nvim-treesitter-textobjects",
       "vrischmann/tree-sitter-templ",
     },
     build = ":TSUpdate",
-    event = "BufReadPost",
     cmd = "TSUpdate",
     opts = {
       ensure_installed = {
