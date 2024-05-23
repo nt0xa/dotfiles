@@ -2,12 +2,12 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     version = "v.*",
+    lazy = false,
     dependencies = {
       "nvim-treesitter/nvim-treesitter-textobjects",
       "vrischmann/tree-sitter-templ",
     },
     build = ":TSUpdate",
-    cmd = "TSUpdate",
     opts = {
       ensure_installed = {
         "bash",
