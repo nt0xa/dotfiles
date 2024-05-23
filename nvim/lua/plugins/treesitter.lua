@@ -4,7 +4,6 @@ return {
     version = "*",
     dependencies = {
       "nvim-treesitter/nvim-treesitter-textobjects",
-      "JoosepAlviste/nvim-ts-context-commentstring",
       "vrischmann/tree-sitter-templ",
     },
     build = ":TSUpdate",
