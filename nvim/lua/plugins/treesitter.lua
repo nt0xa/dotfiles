@@ -1,7 +1,6 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    version = "v.*",
     lazy = false,
     dependencies = {
       "nvim-treesitter/nvim-treesitter-textobjects",
