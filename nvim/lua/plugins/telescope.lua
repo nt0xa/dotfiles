@@ -33,8 +33,9 @@ return {
               '--color=never',
               '--hidden',
               '--follow',
+              '--no-ignore',
               '-E',
-              '.git/*'
+              '.git/*',
           },
         },
       },
