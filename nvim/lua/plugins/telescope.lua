@@ -1,10 +1,13 @@
 return {
-  "nvim-telescope/telescope-file-browser.nvim",
+  "nvim-telescope/telescope.nvim",
   lazy = false,
-  version = "0.1.1",
   dependencies = {
-    "nvim-telescope/telescope.nvim",
     "nvim-lua/plenary.nvim",
+    "nvim-telescope/telescope-file-browser.nvim",
+    {
+      "nvim-telescope/telescope-live-grep-args.nvim",
+      version = "^1.0.0",
+    },
   },
   config = function()
     local telescope = require("telescope")
@@ -76,7 +79,7 @@ return {
 
     telescope.load_extension("file_browser")
 
-    local themes = require('telescope.themes')
+    local themes = require("telescope.themes")
     local builtin = require("telescope.builtin")
 
     vim.keymap.set("n", "gr", function() builtin.lsp_references(themes.get_dropdown({})) end, {})
@@ -84,7 +87,7 @@ return {
     vim.keymap.set("n", "gi", function() builtin.lsp_implementations(themes.get_dropdown({})) end, {})
 
     vim.keymap.set("n", "<leader>f", function() builtin.find_files(themes.get_dropdown({})) end, {})
-    vim.keymap.set("n", "<leader>g", function() builtin.live_grep(themes.get_dropdown({})) end, {})
+    vim.keymap.set("n", "<leader>g", function() telescope.extensions.live_grep_args.live_grep_args((themes.get_dropdown({}))) end, {})
     vim.keymap.set("n", "<leader>b", function() builtin.buffers(themes.get_dropdown({})) end, {})
     vim.keymap.set("n", "<leader>s", function() builtin.lsp_document_symbols(themes.get_dropdown({})) end, {})
     vim.keymap.set("n", "<leader>a", function() builtin.lsp_dynamic_workspace_symbols(themes.get_dropdown({})) end, {})
