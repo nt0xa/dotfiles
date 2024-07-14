@@ -32,3 +32,6 @@
 
 !npm
 !npm/config
+
+!git
+!git/config
