@@ -1,15 +1,12 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    version = "*",
+    lazy = false,
     dependencies = {
       "nvim-treesitter/nvim-treesitter-textobjects",
-      "JoosepAlviste/nvim-ts-context-commentstring",
       "vrischmann/tree-sitter-templ",
     },
     build = ":TSUpdate",
-    event = "BufReadPost",
-    cmd = "TSUpdate",
     opts = {
       ensure_installed = {
         "bash",

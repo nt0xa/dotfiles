@@ -20,6 +20,7 @@ return {
 
           -- Golang
           "gopls",
+          "golangci_lint_ls",
           "templ",
 
           -- Rust
@@ -48,6 +49,7 @@ return {
 
           -- Golang
           "goimports",
+          "gomodifytags",
 
           -- Python
           "mypy",
@@ -124,7 +126,9 @@ return {
       if vim.fn.executable("go") == 1 then
         lsps["gopls"] = {}
         lsps["templ"] = {}
+        lsps["golangci_lint_ls"] = {}
         table.insert(null_ls_sources, formatting.goimports)
+        table.insert(null_ls_sources, code_actions.gomodifytags)
       end
 
       -- Python

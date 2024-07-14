@@ -45,5 +45,13 @@ if err != nil {
 ]]
   ),
   parse("pl", "fmt.Println($0)"),
-  parse("pr", "fmt.Printf(\"%+v\\n\", $0)"),
+  parse("pr", "fmt.Printf(\"$0 = %+v\\n\", $0)"),
+  parse("st", [[
+type $1 struct {
+	$0
+}]]),
+  parse("int", [[
+type $1 interface {
+	$0
+}]]),
 }

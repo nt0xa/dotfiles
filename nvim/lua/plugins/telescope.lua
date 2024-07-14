@@ -33,8 +33,9 @@ return {
               '--color=never',
               '--hidden',
               '--follow',
+              '--no-ignore',
               '-E',
-              '.git/*'
+              '.git/*',
           },
         },
       },
@@ -87,6 +88,7 @@ return {
     vim.keymap.set("n", "<leader>b", function() builtin.buffers(themes.get_dropdown({})) end, {})
     vim.keymap.set("n", "<leader>s", function() builtin.lsp_document_symbols(themes.get_dropdown({})) end, {})
     vim.keymap.set("n", "<leader>a", function() builtin.lsp_dynamic_workspace_symbols(themes.get_dropdown({})) end, {})
+    vim.keymap.set("n", "<leader>e", function() builtin.diagnostics(themes.get_dropdown({})) end, {})
     vim.keymap.set("n", "<leader>d",  function() telescope.extensions.file_browser.file_browser(themes.get_dropdown({})) end)
   end
 }
