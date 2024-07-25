@@ -39,6 +39,8 @@ return {
               '--no-ignore',
               '-E',
               '.git/*',
+              '-E',
+              'node_modules/*',
           },
         },
       },
