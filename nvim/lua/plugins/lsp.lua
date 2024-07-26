@@ -35,7 +35,6 @@ return {
           "html",
           "cssls",
           "tailwindcss",
-          "htmx",
 
           -- PHP
           "intelephense",
@@ -152,7 +151,6 @@ return {
           filetypes = { "templ", "javascript", "typescript", "react" },
           init_options = { userLanguages = { templ = "html" } },
         }
-        lsps["htmx"] = {}
         table.insert(null_ls_sources, formatting.prettier)
       end
 
