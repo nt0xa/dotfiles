@@ -40,7 +40,7 @@ return {
               '-E',
               '.git/*',
               '-E',
-              'node_modules/*',
+              '**/node_modules/*',
           },
         },
       },
