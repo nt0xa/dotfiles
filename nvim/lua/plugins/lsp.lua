@@ -162,7 +162,6 @@ return {
       -- Rust
       if vim.fn.executable("php") == 1 then
         lsps["intelephense"] = {}
-        table.insert(null_ls_sources, formatting.prettier)
       end
 
       local lspconfig = require("lspconfig")
