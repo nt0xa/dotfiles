@@ -38,6 +38,9 @@ return {
 
           -- PHP
           "intelephense",
+
+          -- Elixir
+          "elixirls",
         },
       })
 
@@ -162,6 +165,11 @@ return {
       -- Rust
       if vim.fn.executable("php") == 1 then
         lsps["intelephense"] = {}
+      end
+
+      -- Elixir
+      if vim.fn.executable("elixir") == 1 then
+        lsps["elixirls"] = {}
       end
 
       local lspconfig = require("lspconfig")
