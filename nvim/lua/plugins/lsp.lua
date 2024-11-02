@@ -31,7 +31,7 @@ return {
           "ruff_lsp",
 
           -- Web
-          "tsserver",
+          "ts_ls",
           "html",
           "cssls",
           "tailwindcss",
@@ -142,7 +142,7 @@ return {
 
       -- Javascript / Typescript / HTML / CSS
       if vim.fn.executable("node") == 1 then
-        lsps["tsserver"] = {}
+        lsps["ts_ls"] = {}
         lsps["html"] = {
           init_options = {
             provideFormatter = false
