@@ -28,7 +28,7 @@ return {
 
           -- Python
           "pyright",
-          "ruff_lsp",
+          "ruff",
 
           -- Web
           "ts_ls",
@@ -142,14 +142,13 @@ return {
       -- Python
       if vim.fn.executable("python3") == 1 then
         lsps["pyright"] = {}
-        lsps["ruff_lsp"] = {}
+        lsps["ruff"] = {}
         table.insert(null_ls_sources, diagnostics.mypy)
       end
 
       -- Javascript / Typescript / HTML / CSS
       if vim.fn.executable("node") == 1 then
         lsps["ts_ls"] = {}
-        lsps["tsserver"] = {}
         lsps["html"] = {
           init_options = {
             provideFormatter = false
