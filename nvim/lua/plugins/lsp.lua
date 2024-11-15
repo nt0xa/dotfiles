@@ -38,6 +38,9 @@ return {
 
           -- PHP
           "intelephense",
+
+          -- Terraform
+          "terraformls",
         },
       })
 
@@ -55,6 +58,9 @@ return {
 
           -- Web
           "prettier",
+
+          -- Terraform
+          "terraform_fmt",
         }
       })
 
@@ -159,9 +165,15 @@ return {
         lsps["rust_analyzer"] = {}
       end
 
-      -- Rust
+      -- PHP
       if vim.fn.executable("php") == 1 then
         lsps["intelephense"] = {}
+      end
+
+      -- Terraform
+      if vim.fn.executable("terraform") == 1 then
+        lsps["terraformls"] = {}
+        table.insert(null_ls_sources, formatting.terraform_fmt)
       end
 
       local lspconfig = require("lspconfig")
