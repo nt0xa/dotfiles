@@ -28,6 +28,7 @@ return {
         "terraform",
         "php",
         "graphql",
+        "elixir",
       },
       sync_install = false,
       highlight = {

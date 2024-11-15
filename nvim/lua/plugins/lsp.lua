@@ -31,7 +31,7 @@ return {
           "ruff_lsp",
 
           -- Web
-          "tsserver",
+          "ts_ls",
           "html",
           "cssls",
           "tailwindcss",
@@ -41,6 +41,9 @@ return {
 
           -- Terraform
           "terraformls",
+
+          -- Elixir
+          "elixirls",
         },
       })
 
@@ -145,6 +148,7 @@ return {
 
       -- Javascript / Typescript / HTML / CSS
       if vim.fn.executable("node") == 1 then
+        lsps["ts_ls"] = {}
         lsps["tsserver"] = {}
         lsps["html"] = {
           init_options = {
@@ -168,6 +172,11 @@ return {
       -- PHP
       if vim.fn.executable("php") == 1 then
         lsps["intelephense"] = {}
+      end
+
+      -- Elixir
+      if vim.fn.executable("elixir") == 1 then
+        lsps["elixirls"] = {}
       end
 
       -- Terraform
