@@ -194,6 +194,7 @@ return {
 
       null_ls.setup {
         sources = null_ls_sources,
+        on_attach = on_attach,
       }
     end,
   }
