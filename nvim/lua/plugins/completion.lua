@@ -69,7 +69,7 @@ return {
         }),
         sources = cmp.config.sources {
           { name = "copilot" },
-          { name = "codeverse" },
+          { name = "marscode" },
           { name = "nvim_lsp" },
           { name = "nvim_lsp_signature_help" },
           { name = "luasnip" },
@@ -77,7 +77,7 @@ return {
           { name = "path" },
         },
         experimental = {
-          ghost_text = true
+          ghost_text = false
         }
       }
 

@@ -5,10 +5,10 @@ if username == 'bytedance' then
     "https://code.byted.org/chenjiaqi.cposture/codeverse.vim.git",
     event = "InsertEnter",
     config = function()
-      vim.g.codeverse_disable_autocompletion = true
-      vim.g.codeverse_no_map_tab = true
-      vim.g.codeverse_disable_bindings = true
-      require("codeverse").setup({})
+      vim.g.marscode_disable_autocompletion = true
+      vim.g.marscode_no_map_tab = true
+      vim.g.marscode_disable_bindings = true
+      require("marscode").setup({})
     end
   }
 else 
