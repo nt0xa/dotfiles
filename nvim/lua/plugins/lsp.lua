@@ -184,6 +184,13 @@ return {
         table.insert(null_ls_sources, formatting.terraform_fmt)
       end
 
+      -- Objective-C / Swift
+      if vim.fn.executable("sourcekit-lsp") == 1 then
+        lsps["sourcekit"] = {
+          filetypes = { "swift", "objective-c", "objective-cpp" }
+        }
+      end
+
       local lspconfig = require("lspconfig")
 
       for _, lsp in ipairs(vim.tbl_keys(lsps)) do

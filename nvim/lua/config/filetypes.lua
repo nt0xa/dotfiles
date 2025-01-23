@@ -1,5 +1,6 @@
 vim.filetype.add({
   extension = {
-    templ = 'templ'
+    templ = 'templ',
+    m = 'objc'
   }
 })

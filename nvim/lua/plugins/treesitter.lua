@@ -11,6 +11,7 @@ return {
       ensure_installed = {
         "bash",
         "c",
+        "objc",
         "css",
         "dockerfile",
         "go",
