@@ -187,7 +187,21 @@ return {
       -- Objective-C / Swift
       if vim.fn.executable("sourcekit-lsp") == 1 then
         lsps["sourcekit"] = {
-          filetypes = { "swift", "objective-c", "objective-cpp" }
+          filetypes = { "swift", "objc", "objcpp" },
+          capabilities = {
+            workspace = {
+              didChangeWatchedFiles = {
+                dynamicRegistration = true,
+              },
+            },
+          },
+        }
+      end
+
+      -- C/C++
+      if vim.fn.executable("clangd") == 1 then
+        lsps["clangd"] = {
+          filetypes = { "c", "cpp" },
         }
       end
 
