@@ -3,6 +3,8 @@
 
 !alacritty
 !alacritty/*
+!ghostty
+!ghostty/config
 
 !dircolors
 !dircolors/*
