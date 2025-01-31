@@ -1,35 +1,44 @@
-# Prompt {{{ #
-
-eval "$(starship init zsh)"
-
-# }}} Prompt #
-
 # Plugins {{{ #
 
-typeset -A ZI
-ZI_HOME="$XDG_DATA_HOME/zsh/zi"
-ZI[HOME_DIR]="$ZI_HOME"
-ZI[ZCOMPDUMP_PATH]="$XDG_CACHE_HOME/zsh/zcompdump"
+ZINIT_HOME="$XDG_DATA_HOME/zinit/zinit.git"
+[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+source "${ZINIT_HOME}/zinit.zsh"
 
-if [[ ! -d $ZI_HOME ]]; then
-  git clone https://github.com/z-shell/zi $ZI_HOME
-fi
-source "$ZI_HOME/zi.zsh"
-
-zi lucid wait'1' atload'_history_substring_key_bindings' for \
+zinit lucid wait'1' atload'_history_substring_key_bindings' for \
   zsh-users/zsh-history-substring-search
 
-zi lucid wait'1' atload'_zsh_autosuggest_start' for \
+zinit lucid wait'1' atload'_zsh_autosuggest_start' for \
   zsh-users/zsh-autosuggestions
 
-zi lucid wait for \
+zinit lucid wait for \
   zsh-users/zsh-syntax-highlighting
 
-zi lucid wait atload"ZI[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" blockf for \
+zinit lucid wait atload"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" blockf for \
   zsh-users/zsh-completions
 
-export ATUIN_NOBIND="true"
-zinit load atuinsh/atuin
+if (( $+commands[starship] )); then
+  zinit id-as'starship' as=null atclone'starship init zsh > zhook.zsh' \
+    atpull'%atclone' \
+    src'zhook.zsh' for \
+    zdharma-continuum/null
+fi
+
+if (( $+commands[atuin] )); then
+  zinit id-as'atuin' wait'1' lucid as=null atclone'atuin init zsh --disable-up-arrow > zhook.zsh' \
+    atpull'%atclone' \
+    src'zhook.zsh' for \
+    zdharma-continuum/null
+
+  bindkey '^r' atuin-search
+fi
+
+if (( $+commands[direnv] )); then
+  zinit id-as'direnv' wait'1' lucid as=null atclone'direnv hook zsh > zhook.zsh' \
+    atpull'%atclone' \
+    src'zhook.zsh' for \
+    zdharma-continuum/null
+fi
 
 # }}} Plugins #
 
@@ -114,9 +123,6 @@ bindkey -v '^?' backward-delete-char
 autoload edit-command-line
 zle -N edit-command-line
 bindkey '^g' edit-command-line
-
-# History search
-bindkey '^r' atuin-search
 
 # }}} Key bindings #
 
@@ -206,13 +212,5 @@ echo -ne '\e[5 q'
 function preexec {
     echo -ne '\e[5 q'
 }
-
-# }}} #
-
-# direnv {{{ #
-
-if (( $+commands[direnv] )); then
-  eval "$(direnv hook zsh)"
-fi
 
 # }}} #
