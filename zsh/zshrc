@@ -5,17 +5,15 @@ ZINIT_HOME="$XDG_DATA_HOME/zinit/zinit.git"
 [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 source "${ZINIT_HOME}/zinit.zsh"
 
-zinit lucid wait'1' atload'_history_substring_key_bindings' for \
-  zsh-users/zsh-history-substring-search
-
-zinit lucid wait'1' atload'_zsh_autosuggest_start' for \
-  zsh-users/zsh-autosuggestions
-
-zinit lucid wait for \
-  zsh-users/zsh-syntax-highlighting
-
-zinit lucid wait atload"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" blockf for \
-  zsh-users/zsh-completions
+zinit wait lucid light-mode for \
+  atinit"zicompinit; zicdreplay" \
+      zsh-users/zsh-syntax-highlighting \
+  atload"_history_substring_key_bindings" \
+      zsh-users/zsh-history-substring-search \
+  atload"_zsh_autosuggest_start" \
+      zsh-users/zsh-autosuggestions \
+  blockf atpull'zinit creinstall -q .' \
+      zsh-users/zsh-completions
 
 if (( $+commands[starship] )); then
   zinit id-as'starship' as=null atclone'starship init zsh > zhook.zsh' \
