@@ -34,3 +34,6 @@
 
 !npm
 !npm/config
+
+!pg_format
+!pg_format/functions.lst

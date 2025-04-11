@@ -134,7 +134,18 @@ return {
       if vim.fn.executable("go") == 1 then
         lsps["gopls"] = {}
         lsps["templ"] = {}
-        lsps["golangci_lint_ls"] = {}
+        lsps["golangci_lint_ls"] = {
+          init_options = {
+            command = {
+              "golangci-lint",
+              "run",
+              "--output.json.path",
+              "stdout",
+              "--show-stats=false",
+              "--issues-exit-code=1",
+            },
+          }
+        }
         table.insert(null_ls_sources, formatting.goimports)
         table.insert(null_ls_sources, code_actions.gomodifytags)
       end
@@ -204,6 +215,16 @@ return {
           filetypes = { "c", "cpp" },
         }
       end
+
+
+      table.insert(null_ls_sources, formatting.pg_format.with({
+        extra_args = {
+          "--spaces", 2,
+          "--wrap-limit", 100,
+          "--wrap-after", 20,
+          "--extra-function", vim.fn.expand("$XDG_CONFIG_HOME/pg_format/functions.lst")
+        }
+      }))
 
       local lspconfig = require("lspconfig")
 
