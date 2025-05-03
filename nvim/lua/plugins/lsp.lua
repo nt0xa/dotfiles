@@ -221,7 +221,7 @@ return {
         extra_args = {
           "--spaces", 2,
           "--wrap-limit", 100,
-          "--wrap-after", 20,
+          "--wrap-after", 1,
           "--extra-function", vim.fn.expand("$XDG_CONFIG_HOME/pg_format/functions.lst")
         }
       }))
