@@ -69,7 +69,7 @@ return {
         }),
         sources = cmp.config.sources {
           { name = "copilot" },
-          { name = "marscode" },
+          { name = "trae" },
           { name = "nvim_lsp" },
           { name = "nvim_lsp_signature_help" },
           { name = "luasnip" },
