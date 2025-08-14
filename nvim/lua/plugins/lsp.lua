@@ -132,28 +132,13 @@ return {
 
       -- Golang
       if vim.fn.executable("go") == 1 then
-        lsps["gopls"] = {}
         lsps["templ"] = {}
-        lsps["golangci_lint_ls"] = {
-          init_options = {
-            command = {
-              "golangci-lint",
-              "run",
-              "--output.json.path",
-              "stdout",
-              "--show-stats=false",
-              "--issues-exit-code=1",
-            },
-          }
-        }
         table.insert(null_ls_sources, formatting.goimports)
         table.insert(null_ls_sources, code_actions.gomodifytags)
       end
 
       -- Python
       if vim.fn.executable("python3") == 1 then
-        lsps["pyright"] = {}
-        lsps["ruff"] = {}
         table.insert(null_ls_sources, diagnostics.mypy)
       end
 
