@@ -5,6 +5,8 @@
 !alacritty/*
 !ghostty
 !ghostty/config
+!wezterm
+!wezterm/*
 
 !dircolors
 !dircolors/*
