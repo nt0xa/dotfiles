@@ -64,6 +64,9 @@ return {
 
           -- Terraform
           "terraform_fmt",
+
+          -- Lua
+          "stylua",
         }
       })
 
@@ -201,6 +204,8 @@ return {
         }
       end
 
+      -- Lua
+      table.insert(null_ls_sources, formatting.stylua)
 
       table.insert(null_ls_sources, formatting.pg_format.with({
         extra_args = {
