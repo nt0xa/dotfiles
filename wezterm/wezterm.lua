@@ -60,7 +60,6 @@ config.colors = {
 		inactive_tab_hover = {
 			bg_color = "#434c5e", -- Polar Night 2
 			fg_color = "#e5e9f0", -- Snow Storm 1
-			italic = true,
 		},
 
 		new_tab = {
@@ -71,7 +70,6 @@ config.colors = {
 		new_tab_hover = {
 			bg_color = "#4c566a", -- slightly brighter than bar
 			fg_color = "#eceff4", -- Snow Storm 2
-			italic = true,
 		},
 
 		inactive_tab_edge = "#2e3440",
@@ -200,6 +198,35 @@ table.insert(default_key_tables.copy_mode, {
 		act.ClearSelection,
 		act.CopyMode("Close"),
 	}),
+})
+
+-- Search
+local function complete_search(should_clear)
+	return wezterm.action_callback(function(window, pane, _)
+		if should_clear then
+			window:perform_action(act.CopyMode("ClearPattern"), pane)
+		end
+		window:perform_action(act.CopyMode("AcceptPattern"), pane)
+
+		-- For some reason this just does not work unless we retry a few times.
+		-- Probably something to do with state management between Search/Copy mode.
+		for _ = 1, 3, 1 do
+			wezterm.sleep_ms(100)
+			window:perform_action(act.CopyMode("ClearSelectionMode"), pane)
+		end
+	end)
+end
+
+table.insert(default_key_tables.search_mode, {
+	key = "Escape",
+	mods = "NONE",
+	action = complete_search(true),
+})
+
+table.insert(default_key_tables.search_mode, {
+	key = "Enter",
+	mods = "NONE",
+	action = complete_search(false),
 })
 
 config.key_tables = default_key_tables
