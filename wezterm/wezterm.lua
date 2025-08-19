@@ -23,14 +23,6 @@ config.font_rules = {
 }
 config.bold_brightens_ansi_colors = "BrightAndBold"
 
--- Disable default padding
-config.window_padding = {
-	left = 0,
-	right = 0,
-	top = 3,
-	bottom = 3,
-}
-
 -- Color scheme
 config.color_scheme = "nord"
 
@@ -222,6 +214,17 @@ wezterm.on("update-status", function(window, _)
 		{ Foreground = { Color = p.foreground } },
 		{ Text = " " .. ws .. " " },
 	}))
+end)
+
+-- Tabs titles
+wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
+	-- The tab index starts at 0, so we add 1 to make it start from 1.
+	-- The '..'' is Lua's way of converting the number to a string.
+	local index = tab.tab_index + 1
+	-- Return the index as the text for the tab.
+	return {
+		{ Text = " " .. tostring(index) .. " " },
+	}
 end)
 
 return config
