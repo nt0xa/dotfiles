@@ -147,7 +147,6 @@ return {
 
       -- Javascript / Typescript / HTML / CSS
       if vim.fn.executable("node") == 1 then
-        lsps["ts_ls"] = {}
         lsps["html"] = {
           init_options = {
             provideFormatter = false
