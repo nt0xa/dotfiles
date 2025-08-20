@@ -248,9 +248,15 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
 	-- The tab index starts at 0, so we add 1 to make it start from 1.
 	-- The '..'' is Lua's way of converting the number to a string.
 	local index = tab.tab_index + 1
+	local title = " " .. tostring(index)
+
+	if tab.tab_title and tab.tab_title ~= "" then
+		title = title .. ": " .. tab.tab_title
+	end
+
 	-- Return the index as the text for the tab.
 	return {
-		{ Text = " " .. tostring(index) .. " " },
+		{ Text = title .. " " },
 	}
 end)
 
