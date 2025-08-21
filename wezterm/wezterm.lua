@@ -252,8 +252,8 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
 
 	if tab.tab_title and tab.tab_title ~= "" then
 		title = tab.tab_title
-  else 
-    title = tostring(index)
+	else
+		title = tostring(index)
 	end
 
 	-- Return the index as the text for the tab.
