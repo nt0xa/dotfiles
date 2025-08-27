@@ -27,8 +27,8 @@ return {
           "rust_analyzer",
 
           -- Python
-          "pyright",
           "ruff",
+          "ty",
 
           -- Web
           "ts_ls",
@@ -55,9 +55,6 @@ return {
           -- Golang
           "goimports",
           "gomodifytags",
-
-          -- Python
-          "mypy",
 
           -- Web
           "prettier",
@@ -142,7 +139,7 @@ return {
 
       -- Python
       if vim.fn.executable("python3") == 1 then
-        table.insert(null_ls_sources, diagnostics.mypy)
+        lsps["ruff"] = {}
       end
 
       -- Javascript / Typescript / HTML / CSS
