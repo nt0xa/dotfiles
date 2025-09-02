@@ -28,7 +28,7 @@ return {
 
           -- Python
           "ruff",
-          "ty",
+          "pyright",
 
           -- Web
           "ts_ls",
