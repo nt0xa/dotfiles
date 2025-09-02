@@ -99,18 +99,12 @@ config.keys = {
 	{
 		key = "L",
 		mods = "LEADER|SHIFT",
-		action = act.Multiple({
-			act.MoveTabRelative(1),
-			act.ActivateTabRelative(1),
-		}),
+		action = act.MoveTabRelative(1),
 	},
 	{
 		key = "H",
 		mods = "LEADER|SHIFT",
-		action = act.Multiple({
-			act.MoveTabRelative(-1),
-			act.ActivateTabRelative(-1),
-		}),
+		action = act.MoveTabRelative(-1),
 	},
 
 	-- Navigate panes (no prefix)
