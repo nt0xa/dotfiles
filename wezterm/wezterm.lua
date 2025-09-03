@@ -220,7 +220,7 @@ table.insert(default_key_tables.search_mode, {
 table.insert(default_key_tables.search_mode, {
 	key = "Enter",
 	mods = "NONE",
-	action = complete_search(false),
+	action = complete_search(true),
 })
 
 config.key_tables = default_key_tables
