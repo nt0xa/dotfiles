@@ -1,13 +1,13 @@
 return {
-  {
-    "shaunsingh/nord.nvim",
-    lazy = false,
-    priority = 1000,
-    config = function()
-      vim.g.nord_italic = false
-      vim.g.nord_bold = false
+	{
+		"shaunsingh/nord.nvim",
+		lazy = false,
+		priority = 1000,
+		config = function()
+			vim.g.nord_italic = false
+			vim.g.nord_bold = false
 
-      vim.cmd([[colorscheme nord]])
-    end,
-  }
+			vim.cmd([[colorscheme nord]])
+		end,
+	},
 }

@@ -59,4 +59,3 @@ vim.opt.signcolumn = "yes"
 
 -- Suppress the annoying 'match x of y', 'The only match' and 'Pattern not found' messages.
 vim.opt.shortmess:append("c")
-
