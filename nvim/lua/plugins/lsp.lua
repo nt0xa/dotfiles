@@ -12,220 +12,115 @@ return {
 			"williamboman/mason-lspconfig.nvim",
 		},
 		config = function(plugin, opts)
-			require("mason").setup()
-			require("mason-lspconfig").setup({
-				ensure_installed = {
-					-- Shell
-					"bashls",
-
-					-- Golang
-					"gopls",
-					"golangci_lint_ls",
-					"templ",
-
-					-- Rust
-					"rust_analyzer",
-
-					-- Python
-					"ruff",
-					"pyright",
-
-					-- Web
-					"ts_ls",
-					"html",
-					"cssls",
-					"tailwindcss",
-
-					-- PHP
-					"intelephense",
-
-					-- Terraform
-					"terraformls",
-
-					-- Elixir
-					"elixirls",
+			local config = {
+				golang = {
+					lsp = { "gopls", "golangci_lint_ls" },
+					formatting = { "goimports" },
+					code_actions = { "gomodifytags" },
 				},
-			})
-
-			require("mason-null-ls").setup({
-				ensure_installed = {
-					-- Shell
-					"shfmt",
-
-					-- Golang
-					"goimports",
-					"gomodifytags",
-
-					-- Web
-					"prettier",
-
-					-- Terraform
-					"terraform_fmt",
-
-					-- Lua
-					"stylua",
+				rust = {
+					lsp = { "rust_analyzer" },
 				},
-			})
+				python = {
+					lsp = { "ruff", "pyright" },
+				},
+				css = {
+					lsp = { "cssls", "tailwindcss" },
+				},
+				typescript = {
+					lsp = { "ts_ls" },
+					formatting = { "prettier" },
+				},
+				html = {
+					lsp = { "html" },
+				},
+				terraform = {
+					lsp = { "terraformls" },
+					formatting = { "terraform_fmt" },
+				},
+				elixir = {
+					lsp = { "elixirls" },
+				},
+				lua = {
+					lsp = { "lua_ls" },
+					formatting = { "stylua" },
+				},
+				c = {
+					lsp = { "clangd" },
+				},
+			}
 
-			vim.keymap.set("n", "<leader>l", ":LspStart<CR>", { noremap = true, silent = true })
-
-			local capabilities =
-				require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
-
-			local on_attach = function(client, bufnr)
-				-- Diagnostics window borders.
-				local border = "rounded"
-
-				vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-					border = border,
-				})
-
-				vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-					border = border,
-				})
-
-				vim.diagnostic.config({
-					float = { border = border },
-					virtual_text = false,
-					signs = true,
-				})
-
-				-- Mappings.
-				-- See `:help vim.lsp.*` for documentation on any of the below functions
-				local bufopts = { noremap = true, silent = true, buffer = bufnr }
-				vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
-				vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, bufopts)
-				vim.keymap.set("n", "<localleader>d", vim.lsp.buf.type_definition, bufopts)
-				vim.keymap.set("n", "<localleader>r", vim.lsp.buf.rename, bufopts)
-				vim.keymap.set("n", "<localleader>a", vim.lsp.buf.code_action, bufopts)
-				vim.keymap.set("n", "<localleader>f", function()
-					vim.lsp.buf.format({ async = false })
-				end, bufopts)
-				vim.keymap.set("n", "<localleader>e", vim.diagnostic.open_float, bufopts)
-				vim.keymap.set("n", "gn", vim.diagnostic.goto_next, bufopts)
-				vim.keymap.set("n", "gp", vim.diagnostic.goto_prev, bufopts)
-			end
-
-			-- null-ls helpers
-			local null_ls = require("null-ls")
-			local code_actions = null_ls.builtins.code_actions
-			local diagnostics = null_ls.builtins.diagnostics
-			local formatting = null_ls.builtins.formatting
-			local hover = null_ls.builtins.hover
-			local completion = null_ls.builtins.completion
-
-			-- lsp servers
 			local lsps = {}
-
-			-- null-ls sources
-			-- https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
-			local null_ls_sources = {}
-
-			-- Shell
-			if vim.fn.executable("node") == 1 then
-				lsps["bashls"] = {}
-				table.insert(null_ls_sources, formatting.shfmt)
+			for lang, conf in pairs(config) do
+				for _, lsp in pairs(conf.lsp) do
+					table.insert(lsps, lsp)
+					vim.lsp.enable(lsp)
+				end
 			end
 
-			-- Golang
-			if vim.fn.executable("go") == 1 then
-				lsps["templ"] = {}
-				table.insert(null_ls_sources, formatting.goimports)
-				table.insert(null_ls_sources, code_actions.gomodifytags)
+			local null_ls = require("null-ls")
+			local tools = {}
+			local sources = {}
+			for _, conf in pairs(config) do
+				for key, exes in pairs(conf) do
+					if key ~= "lsp" then
+						for _, exe in pairs(exes) do
+							table.insert(tools, exe)
+							table.insert(sources, null_ls.builtins[key][exe])
+						end
+					end
+				end
 			end
 
-			-- Python
-			if vim.fn.executable("python3") == 1 then
-			end
+			require("mason").setup()
+			require("mason-lspconfig").setup({ ensure_installed = lsps })
+			require("mason-null-ls").setup({ ensure_installed = tools })
+			null_ls.setup({ sources = sources })
 
-			-- Javascript / Typescript / HTML / CSS
-			if vim.fn.executable("node") == 1 then
-				lsps["html"] = {
-					init_options = {
-						provideFormatter = false,
-					},
-					filetypes = { "html", "templ" },
-				}
-				lsps["cssls"] = {}
-				lsps["tailwindcss"] = {
-					filetypes = { "templ", "javascript", "typescript", "react" },
-					init_options = { userLanguages = { templ = "html" } },
-				}
-				table.insert(null_ls_sources, formatting.prettier)
-			end
+			vim.lsp.config("*", {
+				capabilities = require("cmp_nvim_lsp").default_capabilities(
+					vim.lsp.protocol.make_client_capabilities()
+				),
+			})
 
-			-- Rust
-			if vim.fn.executable("cargo") == 1 then
-				lsps["rust_analyzer"] = {}
-			end
+			vim.api.nvim_create_autocmd("LspAttach", {
+				group = vim.api.nvim_create_augroup("global.lsp", { clear = true }),
+				callback = function(args)
+					local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+					local bufnr = args.buf
 
-			-- PHP
-			if vim.fn.executable("php") == 1 then
-				lsps["intelephense"] = {}
-			end
+					-- Diagnostics window borders.
+					local border = "rounded"
 
-			-- Elixir
-			if vim.fn.executable("elixir") == 1 then
-				lsps["elixirls"] = {}
-			end
+					vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+						border = border,
+					})
 
-			-- Terraform
-			if vim.fn.executable("terraform") == 1 then
-				lsps["terraformls"] = {}
-				table.insert(null_ls_sources, formatting.terraform_fmt)
-			end
+					vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+						border = border,
+					})
 
-			-- Objective-C / Swift
-			if vim.fn.executable("sourcekit-lsp") == 1 then
-				lsps["sourcekit"] = {
-					filetypes = { "swift", "objc", "objcpp" },
-					capabilities = {
-						workspace = {
-							didChangeWatchedFiles = {
-								dynamicRegistration = true,
-							},
-						},
-					},
-				}
-			end
+					vim.diagnostic.config({
+						float = { border = border },
+						virtual_text = false,
+						signs = true,
+					})
 
-			-- C/C++
-			if vim.fn.executable("clangd") == 1 then
-				lsps["clangd"] = {
-					filetypes = { "c", "cpp" },
-				}
-			end
-
-			-- Lua
-			table.insert(null_ls_sources, formatting.stylua)
-
-			table.insert(
-				null_ls_sources,
-				formatting.pg_format.with({
-					extra_args = {
-						"--spaces",
-						2,
-						"--wrap-limit",
-						100,
-						"--wrap-after",
-						1,
-						"--extra-function",
-						vim.fn.expand("$XDG_CONFIG_HOME/pg_format/functions.lst"),
-					},
-				})
-			)
-
-			local lspconfig = require("lspconfig")
-
-			for _, lsp in ipairs(vim.tbl_keys(lsps)) do
-				local common = { on_attach = on_attach, capabilities = capabilities }
-				local opts = vim.tbl_deep_extend("force", common, lsps[lsp])
-				lspconfig[lsp].setup(opts)
-			end
-
-			null_ls.setup({
-				sources = null_ls_sources,
-				on_attach = on_attach,
+					-- Mappings.
+					-- See `:help vim.lsp.*` for documentation on any of the below functions
+					local bufopts = { noremap = true, silent = true, buffer = bufnr }
+					vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
+					vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, bufopts)
+					vim.keymap.set("n", "<localleader>d", vim.lsp.buf.type_definition, bufopts)
+					vim.keymap.set("n", "<localleader>r", vim.lsp.buf.rename, bufopts)
+					vim.keymap.set("n", "<localleader>a", vim.lsp.buf.code_action, bufopts)
+					vim.keymap.set("n", "<localleader>f", function()
+						vim.lsp.buf.format({ async = false })
+					end, bufopts)
+					vim.keymap.set("n", "<localleader>e", vim.diagnostic.open_float, bufopts)
+					vim.keymap.set("n", "gn", vim.diagnostic.goto_next, bufopts)
+					vim.keymap.set("n", "gp", vim.diagnostic.goto_prev, bufopts)
+				end,
 			})
 		end,
 	},
