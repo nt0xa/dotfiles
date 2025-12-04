@@ -22,6 +22,7 @@ return {
 				"typescript",
 				"tsx",
 				"yaml",
+				"rust",
 				"json",
 				"jsonc",
 				"gotmpl",
