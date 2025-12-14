@@ -186,18 +186,6 @@ return {
 					-- Diagnostics window borders.
 					local border = "rounded"
 
-					vim.lsp.config.hover = {
-						float = {
-							border = border,
-						},
-					}
-
-					vim.lsp.config.signature_help = {
-						float = {
-							border = border,
-						},
-					}
-
 					vim.diagnostic.config({
 						float = { border = border },
 						virtual_text = false,
@@ -206,8 +194,8 @@ return {
 
 					-- Mappings.
 					local bufopts = { noremap = true, silent = true, buffer = bufnr }
-					vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
-					vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, bufopts)
+					vim.keymap.set("n", "K", function() vim.lsp.buf.hover { border = border } end, bufopts)
+					vim.keymap.set("n", "<C-k>", function() vim.lsp.buf.signature_help { border = border } end, bufopts)
 					vim.keymap.set("n", "<localleader>d", vim.lsp.buf.type_definition, bufopts)
 					vim.keymap.set("n", "<localleader>r", vim.lsp.buf.rename, bufopts)
 					vim.keymap.set("n", "<localleader>a", vim.lsp.buf.code_action, bufopts)
@@ -218,7 +206,7 @@ return {
 					vim.keymap.set("n", "gn", function()
 						vim.diagnostic.jump({ count = 1, float = true })
 					end, bufopts)
-					vim.keymap.set("n", "gn", function()
+					vim.keymap.set("n", "gp", function()
 						vim.diagnostic.jump({ count = -1, float = true })
 					end, bufopts)
 				end,
