@@ -106,6 +106,13 @@ config.keys = {
 		mods = "LEADER|SHIFT",
 		action = act.MoveTabRelative(-1),
 	},
+	{
+		key = "w",
+		mods = "LEADER",
+		action = act.PaneSelect({
+			mode = "SwapWithActive",
+		}),
+	},
 
 	-- Navigate panes (no prefix)
 	{ key = "h", mods = "CTRL", action = act.ActivatePaneDirection("Left") },
@@ -123,9 +130,13 @@ config.keys = {
 	{ key = "c", mods = "LEADER", action = act.ActivateCopyMode },
 
 	-- Select workspace
-	{ key = "f", mods = "LEADER", action = act.ShowLauncherArgs({
-		flags = "WORKSPACES",
-	}) },
+	{
+		key = "f",
+		mods = "LEADER",
+		action = act.ShowLauncherArgs({
+			flags = "WORKSPACES",
+		}),
+	},
 
 	-- New-session: prompt for a workspace name and switch/create it
 	{
