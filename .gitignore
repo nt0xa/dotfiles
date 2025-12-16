@@ -29,6 +29,9 @@
 !zsh
 !zsh/*
 
+!fish
+!fish/config.fish
+
 !starship.toml
 
 !python
