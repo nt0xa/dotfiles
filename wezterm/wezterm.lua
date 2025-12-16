@@ -22,6 +22,7 @@ config.font_rules = {
 	},
 }
 config.bold_brightens_ansi_colors = "BrightAndBold"
+config.default_cursor_style = "SteadyBar"
 
 -- Color scheme
 config.color_scheme = "nord"
