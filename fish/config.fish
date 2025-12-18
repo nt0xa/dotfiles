@@ -30,9 +30,8 @@ set -gp fish_complete_path $XDG_DATA_HOME/fish/completions
 
 # Settings {{{ #
 
+# History
 set -gx fish_history_size 100000
-set fish_vi_force_cursor 1
-set fish_cursor_default line
 
 # Disable greeting message
 set -g fish_greeting 
