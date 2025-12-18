@@ -36,6 +36,9 @@ set -gx fish_history_size 100000
 # Disable greeting message
 set -g fish_greeting 
 
+# Nord theme for fish
+fish_config theme choose Nord
+
 # }}} Settings #
 
 # External Tool Integrations {{{ #
