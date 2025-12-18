@@ -77,39 +77,37 @@ config.colors = {
 	},
 }
 
-config.leader = { key = "`", mods = "NONE", timeout_milliseconds = 1000 }
-
 local act = wezterm.action
 
 config.keys = {
 	-- Double-press backtick to type a literal `
-	{ key = "`", mods = "LEADER", action = act.SendString("`") },
+	{ key = "`", mods = "CTRL|CMD", action = act.SendString("`") },
 
 	-- Splits (tmux: v -> split-window -h, s -> split-window)
-	{ key = "v", mods = "LEADER", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
-	{ key = "s", mods = "LEADER", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
+	{ key = "v", mods = "CTRL|CMD", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+	{ key = "s", mods = "CTRL|CMD", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
 
 	-- New "window" in current dir (tmux new-window) -> new TAB in same domain/cwd
-	{ key = "n", mods = "LEADER", action = act.SpawnTab("CurrentPaneDomain") },
+	{ key = "n", mods = "CTRL|CMD", action = act.SpawnTab("CurrentPaneDomain") },
 
 	-- Next / Previous "window" (tab)
-	{ key = "l", mods = "LEADER", action = act.ActivateTabRelative(1) },
-	{ key = "h", mods = "LEADER", action = act.ActivateTabRelative(-1) },
+	{ key = "l", mods = "CTRL|CMD", action = act.ActivateTabRelative(1) },
+	{ key = "h", mods = "CTRL|CMD", action = act.ActivateTabRelative(-1) },
 
 	-- Swap windows (move the current tab left/right and follow it)
 	{
 		key = "L",
-		mods = "LEADER|SHIFT",
+		mods = "CTRL|CMD|SHIFT",
 		action = act.MoveTabRelative(1),
 	},
 	{
 		key = "H",
-		mods = "LEADER|SHIFT",
+		mods = "CTRL|CMD|SHIFT",
 		action = act.MoveTabRelative(-1),
 	},
 	{
 		key = "w",
-		mods = "LEADER",
+		mods = "CTRL|CMD",
 		action = act.PaneSelect({
 			mode = "SwapWithActive",
 		}),
@@ -128,12 +126,12 @@ config.keys = {
 	{ key = "UpArrow", mods = "SHIFT", action = act.AdjustPaneSize({ "Up", 1 }) },
 
 	-- Copy-mode
-	{ key = "c", mods = "LEADER", action = act.ActivateCopyMode },
+	{ key = "c", mods = "CTRL|CMD", action = act.ActivateCopyMode },
 
 	-- Select workspace
 	{
 		key = "f",
-		mods = "LEADER",
+		mods = "CTRL|CMD",
 		action = act.ShowLauncherArgs({
 			flags = "WORKSPACES",
 		}),
@@ -142,7 +140,7 @@ config.keys = {
 	-- New-session: prompt for a workspace name and switch/create it
 	{
 		key = "N",
-		mods = "LEADER|SHIFT",
+		mods = "CTRL|CMD|SHIFT",
 		action = act.PromptInputLine({
 			description = "New workspace name",
 			action = wezterm.action_callback(function(window, pane, line)
@@ -160,21 +158,21 @@ config.keys = {
 	},
 
 	-- Kill-session: close the current tab (adjust to taste)
-	{ key = "X", mods = "LEADER|SHIFT", action = act.CloseCurrentTab({ confirm = true }) },
+	{ key = "x", mods = "CTRL|CMD", action = act.CloseCurrentTab({ confirm = true }) },
 
 	-- Zoom one pane (tmux: z)
-	{ key = "z", mods = "LEADER", action = act.TogglePaneZoomState },
+	{ key = "z", mods = "CTRL|CMD", action = act.TogglePaneZoomState },
 
 	-- Go to tab
-	{ key = "g", mods = "LEADER", action = act.ShowTabNavigator },
+	{ key = "g", mods = "CTRL|CMD", action = act.ShowTabNavigator },
 
 	-- Rename tab
 	{
 		key = "r",
-		mods = "LEADER",
+		mods = "CTRL|CMD",
 		action = act.PromptInputLine({
 			description = "Rename tab",
-			action = wezterm.action_callback(function(window, pane, line)
+			action = wezterm.action_callback(function(window, _, line)
 				if line and #line > 0 then
 					window:active_tab():set_title(line)
 				end
@@ -184,7 +182,7 @@ config.keys = {
 }
 
 -- Copy mode keybindings
-default_key_tables = wezterm.gui.default_key_tables()
+local default_key_tables = wezterm.gui.default_key_tables()
 
 table.insert(default_key_tables.copy_mode, {
 	key = "y",
@@ -250,7 +248,7 @@ wezterm.on("update-status", function(window, _)
 end)
 
 -- Tabs titles
-wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
+wezterm.on("format-tab-title", function(tab, _, _, _, _, _)
 	-- The tab index starts at 0, so we add 1 to make it start from 1.
 	-- The '..'' is Lua's way of converting the number to a string.
 	local index = tab.tab_index + 1
