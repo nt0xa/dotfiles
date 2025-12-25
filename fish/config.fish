@@ -47,7 +47,7 @@ fish_config theme choose Nord
 type -q starship && starship init fish | source
 
 # OrbStack: Container management integration
-test -f ~/.orbstack/shell/init.fish && source ~/.orbstack/shell/init.fish
+test -f ~/.orbstack/shell/init2.fish && source ~/.orbstack/shell/init2.fish
 
 # }}} External Tool Integrations #
 
@@ -60,8 +60,8 @@ bind \cg edit_command_buffer   # Ctrl+G: Edit in $EDITOR
 
 # Aliases {{{ #
 
-alias v='nvim'
-alias now="date '+%Y-%m-%d_%H-%M'"
+alias v="nvim"
+alias now="date "+%Y-%m-%d_%H-%M""
 
 # }}} Aliases #
 
