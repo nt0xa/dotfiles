@@ -228,11 +228,30 @@ table.insert(plugins, {
 
 table.insert(plugins, {
 	"saghen/blink.cmp",
+	dependencies = {
+		"fang2hou/blink-copilot",
+		{
+			"L3MON4D3/LuaSnip",
+			version = "v2.*",
+			build = "make install_jsregexp",
+			config = function()
+				require("luasnip.loaders.from_lua").lazy_load()
+			end,
+		},
+	},
 	version = "1.*",
 	opts = {
 		keymap = { preset = "default" },
+		snippets = { preset = "luasnip" },
 		sources = {
-			default = { "lsp", "path", "snippets", "buffer" },
+			default = { "lsp", "path", "snippets", "buffer", "copilot" },
+			providers = {
+				copilot = {
+					name = "copilot",
+					module = "blink-copilot",
+					async = true,
+				},
+			},
 		},
 	},
 	opts_extend = { "sources.default" },
@@ -244,14 +263,14 @@ table.insert(plugins, {
 
 table.insert(plugins, {
 	"neovim/nvim-lspconfig",
-	dependencies = {
-		"saghen/blink.cmp",
-	},
 	lazy = false,
 	config = function()
 		vim.lsp.enable({
 			"gopls",
+			"copilot",
 		})
+
+		vim.keymap.set("n", "<localleader>f", vim.lsp.buf.format)
 	end,
 })
 
