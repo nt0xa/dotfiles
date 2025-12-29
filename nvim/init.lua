@@ -28,23 +28,27 @@ vim.opt.clipboard = { "unnamed", "unnamedplus" }
 
 local function paste()
 	return {
-		vim.fn.split(vim.fn.getreg(""), "\n"),
-		vim.fn.getregtype(""),
+		vim.fn.split(vim.fn.getreg(" "), "\n"),
+		vim.fn.getregtype(" "),
 	}
 end
 
--- Use OSC 52 for copy to clipboard, but ignore it for paste.
-vim.g.clipboard = {
-	name = "OSC 52",
-	copy = {
-		["+"] = require("vim.ui.clipboard.osc52").copy("+"),
-		["*"] = require("vim.ui.clipboard.osc52").copy("*"),
-	},
-	paste = {
-		["+"] = paste,
-		["*"] = paste,
-	},
-}
+if vim.fn.filereadable("/.dockerenv") == 1 then
+	-- Use OSC 52 for copy to clipboard, but ignore it for paste.
+	vim.g.clipboard = {
+		name = "OSC 52",
+		copy = {
+			["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+			["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+		},
+		paste = {
+			-- Wezterm doesn't support OSC 52 paste.
+			["+"] = paste,
+			["*"] = paste,
+		},
+	}
+end
+
 
 -- Enable mouse in all modes.
 vim.opt.mouse = "a"
@@ -267,10 +271,23 @@ table.insert(plugins, {
 	config = function()
 		vim.lsp.enable({
 			"gopls",
+			"golangci_lint_ls",
 			"copilot",
 		})
 
+		vim.diagnostic.config({
+			float = { border = "rounded" },
+			virtual_text = false,
+			signs = true,
+		})
+
+		local bufopts = { noremap = true, silent = true, buffer = bufnr }
+		vim.keymap.set("n", "K", function() vim.lsp.buf.hover { border = "rounded" } end, bufopts)
+		vim.keymap.set("n", "<C-k>", function() vim.lsp.buf.signature_help { border = "rounded" } end, bufopts)
 		vim.keymap.set("n", "<localleader>f", vim.lsp.buf.format)
+		vim.keymap.set("n", "<localleader>e", vim.diagnostic.open_float)
+		vim.keymap.set("n", "<localleader>a", vim.lsp.buf.code_action, bufopts)
+		vim.keymap.set("n", "<localleader>f", function() vim.lsp.buf.format({ async = false }) end, bufopts)
 	end,
 })
 
@@ -297,6 +314,8 @@ table.insert(plugins, {
 		{ "gi", "<cmd>Telescope lsp_implementations theme=dropdown<cr>" },
 	},
 	opts = function()
+		local actions = require("telescope.actions")
+		local fb_actions = require("telescope").extensions.file_browser.actions
 		return require("telescope.themes").get_dropdown({
 			extensions = {
 				file_browser = {
@@ -305,6 +324,13 @@ table.insert(plugins, {
 					grouped = true,
 					hijack_netrw = true,
 					git_status = false,
+					mappings = {
+						["n"] = {
+							["h"] = fb_actions.goto_parent_dir,
+							["l"] = actions.select_default,
+							["."] = fb_actions.toggle_hidden,
+						},
+					}
 				},
 			},
 		})
