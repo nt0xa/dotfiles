@@ -28,8 +28,8 @@ vim.opt.clipboard = { "unnamed", "unnamedplus" }
 
 local function paste()
 	return {
-		vim.fn.split(vim.fn.getreg(" "), "\n"),
-		vim.fn.getregtype(" "),
+		vim.fn.split(vim.fn.getreg("\""), "\n"),
+		vim.fn.getregtype("\""),
 	}
 end
 
