@@ -12,6 +12,7 @@ end
 function __dev_run_in_container
   set -l container_name (__dev_container_name)
   set -l command $argv
+  set -l container_home /home/linuxbrew
 
   # Attach to running container or start fresh
   if docker container inspect -f "{{.State.Running}}" $container_name &>/dev/null
@@ -21,9 +22,11 @@ function __dev_run_in_container
       --name $container_name \
       -w /code \
       -v $PWD:/code \
-      -v $XDG_CONFIG_HOME:/home/linuxbrew/.config:ro \
-      -v {$DEV_CONTAINER_IMAGE}_data:/home/linuxbrew/.local \
-      -v {$DEV_CONTAINER_IMAGE}_cache:/home/linuxbrew/.cache \
+      -v $XDG_CONFIG_HOME/fish/config.fish:{$container_home}/.config/fish/config.fish:ro \
+      -v $XDG_CONFIG_HOME/nvim:{$container_home}/.config/nvim:ro \
+      -v $XDG_CONFIG_HOME/starship.toml:{$container_home}/.config/starship.toml:ro \
+      -v {$DEV_CONTAINER_IMAGE}_data:{$container_home}/.local \
+      -v {$DEV_CONTAINER_IMAGE}_cache:{$container_home}/.cache \
       $DEV_CONTAINER_IMAGE $command
   end
 end
