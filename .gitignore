@@ -15,5 +15,6 @@
 !fish/config.fish
 !fish/conf.d
 !fish/conf.d/*.fish
+fish/conf.d/*private.fish
 
 !starship.toml
