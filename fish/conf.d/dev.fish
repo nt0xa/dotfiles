@@ -27,8 +27,19 @@ function __dev_run_in_container
     end
   end
 
+  # Support password managers SSH_AUTH_SOCK.
+  if set -q SSH_AUTH_SOCK
+    set -a volume_args -v /run/host-services/ssh-auth.sock:/var/run/ssh-auth.sock
+    set -a env_args -e SSH_AUTH_SOCK=/var/run/ssh-auth.sock
+  end
+
+  # Pass variables from .env files.
+  if test -e $PWD/.env
+    set -a env_args --env-file .env
+  end
+
   if docker container inspect -f "{{.State.Running}}" $container_name &>/dev/null
-    docker exec -it $env_args $container_name $command
+    docker exec -it $env_args $container_name /docker-entrypoint.sh $command
   else
     docker run -it --rm \
       --name $container_name \
@@ -41,6 +52,7 @@ function __dev_run_in_container
       -v {$DEV_CONTAINER_IMAGE}_data:{$container_home}/.local \
       -v {$DEV_CONTAINER_IMAGE}_cache:{$container_home}/.cache \
       -v {$DEV_CONTAINER_IMAGE}_github:{$container_home}/.config/github-copilot \
+      $volume_args \
       -p 8000 \
       $env_args \
       $DEV_CONTAINER_IMAGE $command
