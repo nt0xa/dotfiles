@@ -192,7 +192,6 @@ table.insert(plugins, {
 			"html",
 			"javascript",
 			"json",
-			"jsonc",
 			"lua",
 			"make",
 			"markdown",
@@ -272,6 +271,8 @@ table.insert(plugins, {
 		vim.lsp.enable({
 			"gopls",
 			"golangci_lint_ls",
+      "ruff",
+      "ty",
 			"copilot",
 		})
 
