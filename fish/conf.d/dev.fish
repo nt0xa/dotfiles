@@ -32,7 +32,11 @@ function __dev_run_in_container
 
   # Support password managers SSH_AUTH_SOCK.
   if set -q SSH_AUTH_SOCK
-    set -a flags -v /run/host-services/ssh-auth.sock:/var/run/ssh-auth.sock
+    if string match -q "*Docker.app*" (realpath (which docker))
+      set -a flags -v $SSH_AUTH_SOCK:/var/run/ssh-auth.sock
+    else
+      set -a flags -v /run/host-services/ssh-auth.sock:/var/run/ssh-auth.sock
+    end
     set -a flags -e SSH_AUTH_SOCK=/var/run/ssh-auth.sock
   end
 
