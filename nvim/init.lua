@@ -225,6 +225,15 @@ table.insert(plugins, {
 	end,
 })
 
+table.insert(plugins, {
+	"Wansmer/treesj",
+	dependencies = { "nvim-treesitter/nvim-treesitter" },
+	config = function()
+		require("treesj").setup()
+		vim.keymap.set("n", "<localleader>s", require("treesj").toggle)
+	end,
+})
+
 -- }}}
 
 -- completion {{{
@@ -285,10 +294,9 @@ table.insert(plugins, {
 		local bufopts = { noremap = true, silent = true, buffer = bufnr }
 		vim.keymap.set("n", "K", function() vim.lsp.buf.hover { border = "rounded" } end, bufopts)
 		vim.keymap.set("n", "<C-k>", function() vim.lsp.buf.signature_help { border = "rounded" } end, bufopts)
-		vim.keymap.set("n", "<localleader>f", vim.lsp.buf.format)
+		vim.keymap.set("n", "<localleader>f", function() vim.lsp.buf.format({ async = false }) end, bufopts)
 		vim.keymap.set("n", "<localleader>e", vim.diagnostic.open_float)
 		vim.keymap.set("n", "<localleader>a", vim.lsp.buf.code_action, bufopts)
-		vim.keymap.set("n", "<localleader>f", function() vim.lsp.buf.format({ async = false }) end, bufopts)
 	end,
 })
 
@@ -310,9 +318,9 @@ table.insert(plugins, {
 		{ "<leader>a", "<cmd>Telescope lsp_dynamic_workspace_symbols theme=dropdown<cr>" },
 		{ "<leader>e", "<cmd>Telescope diagnostics theme=dropdown<cr>" },
 		{ "<leader>d", "<cmd>Telescope file_browser path=%:p:h select_buffer=true theme=dropdown<cr>" },
-		{ "gr", "<cmd>Telescope lsp_references theme=dropdown<cr>" },
-		{ "gd", "<cmd>Telescope lsp_definitions theme=dropdown<cr>" },
-		{ "gi", "<cmd>Telescope lsp_implementations theme=dropdown<cr>" },
+		{ "<leader>r", "<cmd>Telescope lsp_references theme=dropdown<cr>" },
+		{ "<leader>o", "<cmd>Telescope lsp_definitions theme=dropdown<cr>" },
+		{ "<leader>i", "<cmd>Telescope lsp_implementations theme=dropdown<cr>" },
 	},
 	opts = function()
 		local actions = require("telescope.actions")
