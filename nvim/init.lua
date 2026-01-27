@@ -319,7 +319,7 @@ table.insert(plugins, {
 		{ "<leader>e", "<cmd>Telescope diagnostics theme=dropdown<cr>" },
 		{ "<leader>d", "<cmd>Telescope file_browser path=%:p:h select_buffer=true theme=dropdown<cr>" },
 		{ "<leader>r", "<cmd>Telescope lsp_references theme=dropdown<cr>" },
-		{ "<leader>o", "<cmd>Telescope lsp_definitions theme=dropdown<cr>" },
+		{ "<leader>t", "<cmd>Telescope lsp_definitions theme=dropdown<cr>" },
 		{ "<leader>i", "<cmd>Telescope lsp_implementations theme=dropdown<cr>" },
 	},
 	opts = function()
