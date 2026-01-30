@@ -280,9 +280,11 @@ table.insert(plugins, {
 		vim.lsp.enable({
 			"gopls",
 			"golangci_lint_ls",
-      "ruff",
-      "ty",
+			"ruff",
+			"ty",
 			"copilot",
+			"ts_ls",
+			"biome",
 		})
 
 		vim.diagnostic.config({
