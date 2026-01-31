@@ -46,7 +46,7 @@ function __dev_run_in_container
   end
 
   if docker container inspect -f "{{.State.Running}}" $container_name &>/dev/null
-    docker exec -it $env_args $container_name /docker-entrypoint.sh $command
+    docker exec -it $flags $container_name /docker-entrypoint.sh $command
   else
     docker run -it --rm \
       --name $container_name \
