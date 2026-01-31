@@ -13,16 +13,17 @@ function __dev_run_in_container
   set -l container_name (__dev_container_name)
   set -l container_home /home/linuxbrew
 
-  # Separate env args from command
-  set -l flags
+  set -l envs
+  set -l ports
+  set -l volumes
   set -l command
 
   while test (count $argv) -gt 0
     if test "$argv[1]" = "-e"
-      set -a flags -e $argv[2]
+      set -a envs -e $argv[2]
       set -e argv[1..2]
     else if test "$argv[1]" = "-p"
-      set -a flags -p $argv[2]
+      set -a ports -p $argv[2]
       set -e argv[1..2]
     else
       set command $argv
@@ -33,20 +34,20 @@ function __dev_run_in_container
   # Support password managers SSH_AUTH_SOCK.
   if set -q SSH_AUTH_SOCK
     if string match -q "*Docker.app*" (realpath (which docker))
-      set -a flags -v $SSH_AUTH_SOCK:/var/run/ssh-auth.sock
+      set -a volumes -v $SSH_AUTH_SOCK:/var/run/ssh-auth.sock
     else
-      set -a flags -v /run/host-services/ssh-auth.sock:/var/run/ssh-auth.sock
+      set -a volumes -v /run/host-services/ssh-auth.sock:/var/run/ssh-auth.sock
     end
-    set -a flags -e SSH_AUTH_SOCK=/var/run/ssh-auth.sock
+    set -a envs -e SSH_AUTH_SOCK=/var/run/ssh-auth.sock
   end
 
   # Pass variables from .env files.
   if test -e $PWD/.env
-    set -a flags --env-file .env
+    set -a envs --env-file .env
   end
 
   if docker container inspect -f "{{.State.Running}}" $container_name &>/dev/null
-    docker exec -it $flags $container_name /docker-entrypoint.sh $command
+    docker exec -it $envs $container_name /docker-entrypoint.sh $command
   else
     docker run -it --rm \
       --name $container_name \
@@ -59,7 +60,7 @@ function __dev_run_in_container
       -v {$DEV_CONTAINER_IMAGE}_data:{$container_home}/.local \
       -v {$DEV_CONTAINER_IMAGE}_cache:{$container_home}/.cache \
       -v {$DEV_CONTAINER_IMAGE}_github:{$container_home}/.config/github-copilot \
-      $flags \
+      $envs $ports $volumes \
       $DEV_CONTAINER_IMAGE $command
   end
 end
