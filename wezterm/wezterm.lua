@@ -27,10 +27,6 @@ config.default_cursor_style = "SteadyBar"
 -- Color scheme
 config.color_scheme = "nord"
 
--- Window settings
--- Hide the OS title bar but keep a resizable border
-config.window_decorations = "RESIZE"
-
 config.window_frame = {
 	font = wezterm.font({
 		family = "SF Mono",
@@ -83,26 +79,23 @@ config.keys = {
 	-- Double-press backtick to type a literal `
 	{ key = "`", mods = "CTRL|CMD", action = act.SendString("`") },
 
-	-- Splits (tmux: v -> split-window -h, s -> split-window)
+	-- Splits
+	{ key = "s", mods = "CMD", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
 	{ key = "v", mods = "CTRL|CMD", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
-	{ key = "s", mods = "CTRL|CMD", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
-
-	-- New "window" in current dir (tmux new-window) -> new TAB in same domain/cwd
-	{ key = "n", mods = "CTRL|CMD", action = act.SpawnTab("CurrentPaneDomain") },
 
 	-- Next / Previous "window" (tab)
-	{ key = "l", mods = "CTRL|CMD", action = act.ActivateTabRelative(1) },
-	{ key = "h", mods = "CTRL|CMD", action = act.ActivateTabRelative(-1) },
+	{ key = "l", mods = "CMD", action = act.ActivateTabRelative(1) },
+	{ key = "h", mods = "CMD", action = act.ActivateTabRelative(-1) },
 
 	-- Swap windows (move the current tab left/right and follow it)
 	{
 		key = "L",
-		mods = "CTRL|CMD|SHIFT",
+		mods = "CMD|SHIFT",
 		action = act.MoveTabRelative(1),
 	},
 	{
 		key = "H",
-		mods = "CTRL|CMD|SHIFT",
+		mods = "CMD|SHIFT",
 		action = act.MoveTabRelative(-1),
 	},
 	{
@@ -139,8 +132,8 @@ config.keys = {
 
 	-- New-session: prompt for a workspace name and switch/create it
 	{
-		key = "N",
-		mods = "CTRL|CMD|SHIFT",
+		key = "n",
+		mods = "CMD",
 		action = act.PromptInputLine({
 			description = "New workspace name",
 			action = wezterm.action_callback(function(window, pane, line)
@@ -157,19 +150,18 @@ config.keys = {
 		}),
 	},
 
-	-- Kill-session: close the current tab (adjust to taste)
-	{ key = "x", mods = "CTRL|CMD", action = act.CloseCurrentTab({ confirm = true }) },
+	{ key = "w", mods = "CMD", action = act.CloseCurrentPane({ confirm = false }) },
 
 	-- Zoom one pane (tmux: z)
 	{ key = "z", mods = "CTRL|CMD", action = act.TogglePaneZoomState },
 
 	-- Go to tab
-	{ key = "g", mods = "CTRL|CMD", action = act.ShowTabNavigator },
+	{ key = "g", mods = "CMD", action = act.ShowTabNavigator },
 
 	-- Rename tab
 	{
 		key = "r",
-		mods = "CTRL|CMD",
+		mods = "CMD",
 		action = act.PromptInputLine({
 			description = "Rename tab",
 			action = wezterm.action_callback(function(window, _, line)
