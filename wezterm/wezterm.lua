@@ -27,6 +27,7 @@ config.default_cursor_style = "SteadyBar"
 -- Color scheme
 config.color_scheme = "nord"
 
+config.window_decorations = "RESIZE"
 config.window_frame = {
 	font = wezterm.font({
 		family = "SF Mono",
@@ -80,8 +81,8 @@ config.keys = {
 	{ key = "`", mods = "CTRL|CMD", action = act.SendString("`") },
 
 	-- Splits
-	{ key = "s", mods = "CMD", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
-	{ key = "s", mods = "CTRL|CMD", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+	{ key = "s", mods = "CTRL|CMD", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
+	{ key = "s", mods = "CMD", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
 
 	-- Next / Previous "window" (tab)
 	{ key = "l", mods = "CMD", action = act.ActivateTabRelative(1) },
@@ -123,8 +124,8 @@ config.keys = {
 
 	-- Select workspace
 	{
-		key = "f",
-		mods = "CTRL|CMD",
+		key = "d",
+		mods = "CMD",
 		action = act.ShowLauncherArgs({
 			flags = "WORKSPACES",
 		}),
