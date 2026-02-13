@@ -1,5 +1,5 @@
 # Configurable dev container image name
-set -g DEV_CONTAINER_IMAGE devcontainer
+set -g DEV_CONTAINER_IMAGE dev
 
 # Generate container name based on current directory
 function __dev_container_name
@@ -15,7 +15,7 @@ function __dev_run_in_container
 
   set -l envs
   set -l ports
-  set -l volumes
+  set -l vols
   set -l command
 
   while test (count $argv) -gt 0
@@ -34,9 +34,9 @@ function __dev_run_in_container
   # Support password managers SSH_AUTH_SOCK.
   if set -q SSH_AUTH_SOCK
     if string match -q "*Docker.app*" (realpath (which docker))
-      set -a volumes -v $SSH_AUTH_SOCK:/var/run/ssh-auth.sock
+      set -a vols -v $SSH_AUTH_SOCK:/var/run/ssh-auth.sock
     else
-      set -a volumes -v /run/host-services/ssh-auth.sock:/var/run/ssh-auth.sock
+      set -a vols -v /run/host-services/ssh-auth.sock:/var/run/ssh-auth.sock
     end
     set -a envs -e SSH_AUTH_SOCK=/var/run/ssh-auth.sock
   end
@@ -46,21 +46,27 @@ function __dev_run_in_container
     set -a envs --env-file .env
   end
 
+  set -a vols \
+    -v {$DEV_CONTAINER_IMAGE}_home:{$container_home} \
+    -v {$DEV_CONTAINER_IMAGE}_cache:{$container_home}/.cache
+
+  # Mount only necessary things from dotfiles.
+  for p in \
+    fish/config.fish \
+    nvim/init.lua \
+    nvim/luasnippets \
+    starship.toml
+    set -a vols -v $XDG_CONFIG_HOME/{$p}:{$container_home}/.config/{$p}:ro
+  end
+
   if docker container inspect -f "{{.State.Running}}" $container_name &>/dev/null
     docker exec -it $envs $container_name /docker-entrypoint.sh $command
   else
     docker run -it --rm \
       --name $container_name \
-      -w /code \
-      -v $PWD:/code \
-      -v $XDG_CONFIG_HOME/fish/config.fish:{$container_home}/.config/fish/config.fish:ro \
-      -v $XDG_CONFIG_HOME/nvim/init.lua:{$container_home}/.config/nvim/init.lua:ro \
-      -v $XDG_CONFIG_HOME/nvim/luasnippets:{$container_home}/.config/nvim/luasnippets:ro \
-      -v $XDG_CONFIG_HOME/starship.toml:{$container_home}/.config/starship.toml:ro \
-      -v {$DEV_CONTAINER_IMAGE}_data:{$container_home}/.local \
-      -v {$DEV_CONTAINER_IMAGE}_cache:{$container_home}/.cache \
-      -v {$DEV_CONTAINER_IMAGE}_github:{$container_home}/.config/github-copilot \
-      $envs $ports $volumes \
+      -w /code/(basename $PWD) \
+      -v $PWD:/code/(basename $PWD) \
+      $vols $envs $ports \
       $DEV_CONTAINER_IMAGE $command
   end
 end
