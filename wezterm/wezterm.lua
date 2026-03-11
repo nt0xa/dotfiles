@@ -27,7 +27,7 @@ config.default_cursor_style = "SteadyBar"
 -- Color scheme
 config.color_scheme = "nord"
 
-config.window_decorations = "RESIZE"
+config.window_decorations = "TITLE | RESIZE"
 config.window_frame = {
 	font = wezterm.font({
 		family = "SF Mono",
