@@ -41,6 +41,9 @@ function __dev_run_in_container
     set -a envs -e SSH_AUTH_SOCK=/var/run/ssh-auth.sock
   end
 
+  # Add docker socket
+  set -a vols -v /var/run/docker.sock:/var/run/docker.sock
+
   # Pass variables from .env files.
   if test -e $PWD/.env
     set -a envs --env-file .env
@@ -63,6 +66,7 @@ function __dev_run_in_container
     docker exec -it $envs $container_name /docker-entrypoint.sh $command
   else
     docker run -it --rm \
+      --group-add root \
       --name $container_name \
       -w /code/(basename $PWD) \
       -v $PWD:/code/(basename $PWD) \
