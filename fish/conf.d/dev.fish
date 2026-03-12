@@ -63,7 +63,7 @@ function __dev_run_in_container
   end
 
   if docker container inspect -f "{{.State.Running}}" $container_name &>/dev/null
-    docker exec -it $envs $container_name /docker-entrypoint.sh $command
+    docker exec -it $envs $container_name $command
   else
     docker run -it --rm \
       --group-add root \
