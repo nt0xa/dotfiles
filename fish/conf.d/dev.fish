@@ -41,9 +41,6 @@ function __dev_run_in_container
     set -a envs -e SSH_AUTH_SOCK=/var/run/ssh-auth.sock
   end
 
-  # Add docker socket
-  set -a vols -v /var/run/docker.sock:/var/run/docker.sock
-
   # Pass variables from .env files.
   if test -e $PWD/.env
     set -a envs --env-file .env
