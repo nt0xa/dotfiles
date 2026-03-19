@@ -23,6 +23,7 @@ config.font_rules = {
 }
 config.bold_brightens_ansi_colors = "BrightAndBold"
 config.default_cursor_style = "SteadyBar"
+config.max_fps = 240
 
 -- Color scheme
 config.color_scheme = "nord"
