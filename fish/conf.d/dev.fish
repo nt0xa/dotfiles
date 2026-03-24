@@ -25,6 +25,9 @@ function __dev_run_in_container
     else if test "$argv[1]" = "-p"
       set -a ports -p $argv[2]
       set -e argv[1..2]
+    else if test "$argv[1]" = "-v"
+      set -a vols -v $argv[2]
+      set -e argv[1..2]
     else
       set command $argv
       break
