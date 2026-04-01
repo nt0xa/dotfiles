@@ -4,6 +4,7 @@ set -g DEV_CONTAINER_IMAGE dev
 # Generate container name based on current directory
 function __dev_container_name
   set -l dir (basename $PWD)
+  set -l dir (string replace -r "^\." "" $dir)
   set -l hash (string sub -l 8 (echo -n $PWD | md5sum))
   echo {$dir}_{$hash}
 end
