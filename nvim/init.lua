@@ -28,8 +28,8 @@ vim.opt.clipboard = { "unnamed", "unnamedplus" }
 
 local function paste()
 	return {
-		vim.fn.split(vim.fn.getreg("\""), "\n"),
-		vim.fn.getregtype("\""),
+		vim.fn.split(vim.fn.getreg('"'), "\n"),
+		vim.fn.getregtype('"'),
 	}
 end
 
@@ -48,7 +48,6 @@ if vim.fn.filereadable("/.dockerenv") == 1 then
 		},
 	}
 end
-
 
 -- Enable mouse in all modes.
 vim.opt.mouse = "a"
@@ -146,232 +145,207 @@ vim.keymap.set("c", "<C-d>", "<Delete>")
 
 -- }}}
 
+-- vim.pack {{{
+
+vim.api.nvim_create_autocmd("PackChanged", {
+	callback = function(ev)
+		local name, kind = ev.data.spec.name, ev.data.kind
+
+		if name == "nvim-treesitter" and kind == "update" then
+			if not ev.data.active then
+				vim.cmd.packadd("nvim-treesitter")
+			end
+			vim.cmd("TSUpdate")
+		end
+
+		if name == "LuaSnip" and (kind == "install" or kind == "update") then
+			vim.system({ "make install_jsregexp" }, { cwd = ev.data.path })
+		end
+	end,
+})
+
+vim.pack.add({
+	"https://github.com/gbprod/nord.nvim",
+	"https://github.com/nvim-treesitter/nvim-treesitter",
+	"https://github.com/neovim/nvim-lspconfig",
+	"https://github.com/fang2hou/blink-copilot",
+	{
+		src = "https://github.com/saghen/blink.cmp",
+		version = vim.version.range("1.0.0"),
+	},
+	{
+		src = "https://github.com/L3MON4D3/LuaSnip",
+		version = vim.version.range("2.0.0"),
+	},
+	"https://github.com/nvim-lua/plenary.nvim",
+	"https://github.com/nvim-telescope/telescope-file-browser.nvim",
+	"https://github.com/nvim-telescope/telescope.nvim",
+})
+
+-- }}}
+
 -- colorscheme {{{
 
-local plugins = {}
+vim.g.nord_italic = false
+vim.g.nord_bold = false
+vim.cmd([[colorscheme nord]])
 
-table.insert(plugins, {
-	"gbprod/nord.nvim",
-	lazy = false,
-	priority = 1000,
-	config = function()
-		vim.g.nord_italic = false
-		vim.g.nord_bold = false
+-- }}}
 
-		vim.cmd([[colorscheme nord]])
+-- nvim-treesitter {{{
+
+local parsers = {
+	"bash",
+	"c",
+	"css",
+	"elixir",
+	"fish",
+	"git_config",
+	"git_rebase",
+	"gitattributes",
+	"gitcommit",
+	"gitignore",
+	"go",
+	"gomod",
+	"gosum",
+	"gotmpl",
+	"graphql",
+	"hcl",
+	"html",
+	"javascript",
+	"json",
+	"lua",
+	"make",
+	"markdown",
+	"objc",
+	"php",
+	"python",
+	"rust",
+	"sql",
+	"swift",
+	"terraform",
+	"toml",
+	"tsx",
+	"typescript",
+	"yaml",
+}
+
+require("nvim-treesitter").install(parsers):wait(300000)
+
+-- Enable treesitter highlighting and indents
+vim.api.nvim_create_autocmd("FileType", {
+	callback = function(args)
+		local filetype = args.match
+		local lang = vim.treesitter.language.get_lang(filetype)
+
+		if vim.treesitter.language.add(lang) then
+			vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+			vim.treesitter.start()
+		end
 	end,
 })
 
 -- }}}
 
--- treesitter {{{
+-- nvim-lspconfig {{{
 
-table.insert(plugins, {
-	"nvim-treesitter/nvim-treesitter",
-	lazy = false,
-	branch = "main",
-	build = ":TSUpdate",
-	config = function()
-		local parsers = {
-			"bash",
-			"c",
-			"css",
-			"elixir",
-			"fish",
-			"git_config",
-			"git_rebase",
-			"gitattributes",
-			"gitcommit",
-			"gitignore",
-			"go",
-			"gomod",
-			"gosum",
-			"gotmpl",
-			"graphql",
-			"hcl",
-			"html",
-			"javascript",
-			"json",
-			"lua",
-			"make",
-			"markdown",
-			"objc",
-			"php",
-			"python",
-			"rust",
-			"sql",
-			"swift",
-			"terraform",
-			"toml",
-			"tsx",
-			"typescript",
-			"yaml",
-		}
-
-		require("nvim-treesitter").install(parsers):wait(300000)
-
-		-- Enable treesitter highlighting and indents
-		vim.api.nvim_create_autocmd("FileType", {
-			callback = function(args)
-				local filetype = args.match
-				local lang = vim.treesitter.language.get_lang(filetype)
-
-				if vim.treesitter.language.add(lang) then
-					vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-					vim.treesitter.start()
-				end
-			end,
-		})
-	end,
+vim.lsp.enable({
+	"gopls",
+	"golangci_lint_ls",
+	"ruff",
+	"ty",
+	"copilot",
+	"ts_ls",
+	"biome",
 })
 
-table.insert(plugins, {
-	"Wansmer/treesj",
-	dependencies = { "nvim-treesitter/nvim-treesitter" },
-	config = function()
-		require("treesj").setup()
-		vim.keymap.set("n", "<localleader>s", require("treesj").toggle)
-	end,
+vim.diagnostic.config({
+	float = { border = "rounded" },
+	virtual_text = false,
+	signs = true,
 })
+
+local bufopts = { noremap = true, silent = true, buffer = bufnr }
+vim.keymap.set("n", "K", function()
+	vim.lsp.buf.hover({ border = "rounded" })
+end, bufopts)
+vim.keymap.set("n", "<C-k>", function()
+	vim.lsp.buf.signature_help({ border = "rounded" })
+end, bufopts)
+vim.keymap.set("n", "<localleader>f", function()
+	vim.lsp.buf.format({ async = false })
+end, bufopts)
+vim.keymap.set("n", "<localleader>e", vim.diagnostic.open_float)
+vim.keymap.set("n", "<localleader>a", vim.lsp.buf.code_action, bufopts)
 
 -- }}}
 
--- completion {{{
+-- luasnip {{{
 
-table.insert(plugins, {
-	"saghen/blink.cmp",
-	dependencies = {
-		"fang2hou/blink-copilot",
-		{
-			"L3MON4D3/LuaSnip",
-			version = "v2.*",
-			build = "make install_jsregexp",
-			config = function()
-				require("luasnip.loaders.from_lua").lazy_load()
-			end,
-		},
-	},
-	version = "1.*",
-	opts = {
-		keymap = { preset = "default" },
-		snippets = { preset = "luasnip" },
-		sources = {
-			default = { "lsp", "path", "snippets", "buffer", "copilot" },
-			providers = {
-				copilot = {
-					name = "copilot",
-					module = "blink-copilot",
-					async = true,
-				},
+require("luasnip.loaders.from_lua").lazy_load()
+
+-- }}}
+
+-- blink.cmp {{{
+
+require("blink.cmp").setup({
+	snippets = { preset = "luasnip" },
+	sources = {
+		default = { "lsp", "path", "snippets", "buffer", "copilot" },
+		providers = {
+			copilot = {
+				name = "copilot",
+				module = "blink-copilot",
+				async = true,
 			},
 		},
 	},
-	opts_extend = { "sources.default" },
 })
 
 -- }}}
 
--- lsp {{{
+-- telescope.nvim {{{
 
-table.insert(plugins, {
-	"neovim/nvim-lspconfig",
-	lazy = false,
-	config = function()
-		vim.lsp.enable({
-			"gopls",
-			"golangci_lint_ls",
-			"ruff",
-			"ty",
-			"copilot",
-			"ts_ls",
-			"biome",
-		})
+local actions = require("telescope.actions")
+local fb_actions = require("telescope").extensions.file_browser.actions
 
-		vim.diagnostic.config({
-			float = { border = "rounded" },
-			virtual_text = false,
-			signs = true,
-		})
-
-		local bufopts = { noremap = true, silent = true, buffer = bufnr }
-		vim.keymap.set("n", "K", function() vim.lsp.buf.hover { border = "rounded" } end, bufopts)
-		vim.keymap.set("n", "<C-k>", function() vim.lsp.buf.signature_help { border = "rounded" } end, bufopts)
-		vim.keymap.set("n", "<localleader>f", function() vim.lsp.buf.format({ async = false }) end, bufopts)
-		vim.keymap.set("n", "<localleader>e", vim.diagnostic.open_float)
-		vim.keymap.set("n", "<localleader>a", vim.lsp.buf.code_action, bufopts)
-	end,
+require("telescope").setup({
+    defaults = require("telescope.themes").get_dropdown({
+        -- Your global defaults here
+    }),
+    extensions = {
+        file_browser = {
+            initial_mode = "normal",
+            respect_gitignore = true,
+            grouped = true,
+            hijack_netrw = true,
+            git_status = false,
+            theme = "dropdown", -- Ensuring file_browser uses the theme
+            mappings = {
+                ["n"] = {
+                    ["h"] = fb_actions.goto_parent_dir,
+                    ["l"] = actions.select_default,
+                    ["."] = fb_actions.toggle_hidden,
+                },
+            },
+        },
+    },
 })
 
--- }}}
+require("telescope").load_extension("file_browser")
 
--- telescope {{{
+local map = vim.keymap.set
+local opt = { noremap = true, silent = true }
 
-table.insert(plugins, {
-	"nvim-telescope/telescope.nvim",
-	dependencies = {
-		"nvim-lua/plenary.nvim",
-		"nvim-telescope/telescope-file-browser.nvim",
-	},
-	keys = {
-		{ "<leader>f", "<cmd>Telescope find_files theme=dropdown<cr>" },
-		{ "<leader>g", "<cmd>Telescope live_grep theme=dropdown<cr>" },
-		{ "<leader>b", "<cmd>Telescope buffers theme=dropdown<cr>" },
-		{ "<leader>s", "<cmd>Telescope lsp_document_symbols theme=dropdown<cr>" },
-		{ "<leader>a", "<cmd>Telescope lsp_dynamic_workspace_symbols theme=dropdown<cr>" },
-		{ "<leader>e", "<cmd>Telescope diagnostics theme=dropdown<cr>" },
-		{ "<leader>d", "<cmd>Telescope file_browser path=%:p:h select_buffer=true theme=dropdown<cr>" },
-		{ "<leader>r", "<cmd>Telescope lsp_references theme=dropdown<cr>" },
-		{ "<leader>t", "<cmd>Telescope lsp_definitions theme=dropdown<cr>" },
-		{ "<leader>i", "<cmd>Telescope lsp_implementations theme=dropdown<cr>" },
-	},
-	opts = function()
-		local actions = require("telescope.actions")
-		local fb_actions = require("telescope").extensions.file_browser.actions
-		return require("telescope.themes").get_dropdown({
-			extensions = {
-				file_browser = {
-					initial_mode = "normal",
-					respect_gitignore = true,
-					grouped = true,
-					hijack_netrw = true,
-					git_status = false,
-					mappings = {
-						["n"] = {
-							["h"] = fb_actions.goto_parent_dir,
-							["l"] = actions.select_default,
-							["."] = fb_actions.toggle_hidden,
-						},
-					}
-				},
-			},
-		})
-	end,
-	config = function(_, opts)
-		require("telescope").setup(opts)
-		require("telescope").load_extension("file_browser")
-	end,
-})
-
--- }}}
-
--- lazy.nvim {{{
-
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-	local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
-	if vim.v.shell_error ~= 0 then
-		vim.api.nvim_echo({
-			{ "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-			{ out, "WarningMsg" },
-			{ "\nPress any key to exit..." },
-		}, true, {})
-		vim.fn.getchar()
-		os.exit(1)
-	end
-end
-vim.opt.rtp:prepend(lazypath)
-
-require("lazy").setup(plugins)
+map("n", "<leader>f", "<cmd>Telescope find_files theme=dropdown<cr>", opt)
+map("n", "<leader>g", "<cmd>Telescope live_grep theme=dropdown<cr>", opt)
+map("n", "<leader>b", "<cmd>Telescope buffers theme=dropdown<cr>", opt)
+map("n", "<leader>s", "<cmd>Telescope lsp_document_symbols theme=dropdown<cr>", opt)
+map("n", "<leader>a", "<cmd>Telescope lsp_dynamic_workspace_symbols theme=dropdown<cr>", opt)
+map("n", "<leader>e", "<cmd>Telescope diagnostics theme=dropdown<cr>", opt)
+map("n", "<leader>d", "<cmd>Telescope file_browser path=%:p:h select_buffer=true theme=dropdown<cr>", opt)
+map("n", "<leader>r", "<cmd>Telescope lsp_references theme=dropdown<cr>", opt)
+map("n", "<leader>t", "<cmd>Telescope lsp_definitions theme=dropdown<cr>", opt)
+map("n", "<leader>i", "<cmd>Telescope lsp_implementations theme=dropdown<cr>", opt)
 
 -- }}}
