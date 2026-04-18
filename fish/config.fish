@@ -49,6 +49,14 @@ type -q starship && starship init fish | source
 # OrbStack: Container management integration
 test -f ~/.orbstack/shell/init2.fish && source ~/.orbstack/shell/init2.fish
 
+# Inside a dev container, suppress OSC 7 cwd reporting so the terminal
+# keeps the host cwd (container paths don't exist on the host, which
+# breaks wezterm Cmd+T / splits).
+if test -f /.dockerenv
+    function __fish_update_cwd_osc --on-variable PWD
+    end
+end
+
 # }}} External Tool Integrations #
 
 # Key Bindings {{{ #
