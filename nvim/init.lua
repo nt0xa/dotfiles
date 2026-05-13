@@ -168,7 +168,6 @@ vim.pack.add({
 	"https://github.com/gbprod/nord.nvim",
 	"https://github.com/nvim-treesitter/nvim-treesitter",
 	"https://github.com/neovim/nvim-lspconfig",
-	"https://github.com/fang2hou/blink-copilot",
 	{
 		src = "https://github.com/saghen/blink.cmp",
 		version = vim.version.range("1.0.0"),
@@ -254,7 +253,6 @@ vim.lsp.enable({
 	"golangci_lint_ls",
 	"ruff",
 	"ty",
-	"copilot",
 	"ts_ls",
 	"biome",
 })
@@ -291,14 +289,7 @@ require("luasnip.loaders.from_lua").lazy_load()
 require("blink.cmp").setup({
 	snippets = { preset = "luasnip" },
 	sources = {
-		default = { "lsp", "path", "snippets", "buffer", "copilot" },
-		providers = {
-			copilot = {
-				name = "copilot",
-				module = "blink-copilot",
-				async = true,
-			},
-		},
+		default = { "lsp", "path", "snippets", "buffer" },
 	},
 })
 
