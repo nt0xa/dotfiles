@@ -1,5 +1,5 @@
 # Configurable dev container image name
-set -g DEV_CONTAINER_IMAGE dev
+set -g DEV_CONTAINER_IMAGE ghcr.io/nt0xa/devcontainer:main
 
 # Generate container name based on current directory
 function __dev_container_name
@@ -18,6 +18,7 @@ function __dev_run_in_container
   set -l ports
   set -l vols
   set -l command
+  set -l net
 
   while test (count $argv) -gt 0
     if test "$argv[1]" = "-e"
@@ -28,6 +29,9 @@ function __dev_run_in_container
       set -e argv[1..2]
     else if test "$argv[1]" = "-v"
       set -a vols -v $argv[2]
+      set -e argv[1..2]
+    else if test "$argv[1]" = "-n"
+      set net --network $argv[2]
       set -e argv[1..2]
     else
       set command $argv
@@ -51,8 +55,8 @@ function __dev_run_in_container
   end
 
   set -a vols \
-    -v {$DEV_CONTAINER_IMAGE}_home:{$container_home} \
-    -v {$DEV_CONTAINER_IMAGE}_cache:{$container_home}/.cache
+    -v dev_home:{$container_home} \
+    -v dev_cache:{$container_home}/.cache
 
   # Mount only necessary things from dotfiles.
   for p in \
@@ -71,7 +75,7 @@ function __dev_run_in_container
       --name $container_name \
       -w /code/(basename $PWD) \
       -v $PWD:/code/(basename $PWD) \
-      $vols $envs $ports \
+      $net $vols $envs $ports \
       $DEV_CONTAINER_IMAGE $command
   end
 end
