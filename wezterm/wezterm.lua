@@ -112,6 +112,13 @@ config.keys = {
 			mode = "SwapWithActive",
 		}),
 	},
+	{
+		key = "e",
+		mods = "CTRL|CMD",
+		action = wezterm.action_callback(function(win, pane)
+			pane:move_to_new_tab()
+		end),
+	},
 
 	-- Navigate panes (no prefix)
 	{ key = "h", mods = "CTRL", action = act.ActivatePaneDirection("Left") },
