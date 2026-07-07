@@ -88,8 +88,11 @@ vim.opt.signcolumn = "yes"
 -- Suppress the annoying 'match x of y', 'The only match' and 'Pattern not found' messages.
 vim.opt.shortmess:append("c")
 
--- Do not select the first completion option by default.
-vim.opt.completeopt = { "menuone", "noselect" }
+-- Completion: always show menu, don't auto-select, fuzzy match.
+vim.opt.completeopt = { "menuone", "noselect", "fuzzy" }
+
+-- Limit the completion popup to at most 10 visible items (scrolls beyond that).
+vim.opt.pumheight = 10
 
 -- }}}
 
@@ -136,9 +139,6 @@ vim.keymap.set("c", "<C-f>", "<Right>")
 vim.keymap.set("i", "<C-b>", "<Left>", opts)
 vim.keymap.set("c", "<C-b>", "<Left>")
 
--- Paste.
-vim.keymap.set("i", "<C-y>", "<C-o>p", opts)
-
 -- Del.
 vim.keymap.set("i", "<C-d>", "<Delete>", opts)
 vim.keymap.set("c", "<C-d>", "<Delete>")
@@ -168,10 +168,7 @@ vim.pack.add({
 	"https://github.com/gbprod/nord.nvim",
 	"https://github.com/nvim-treesitter/nvim-treesitter",
 	"https://github.com/neovim/nvim-lspconfig",
-	{
-		src = "https://github.com/saghen/blink.cmp",
-		version = vim.version.range("1.0.0"),
-	},
+	"https://github.com/echasnovski/mini.completion",
 	{
 		src = "https://github.com/L3MON4D3/LuaSnip",
 		version = vim.version.range("2.0.0"),
@@ -284,14 +281,31 @@ require("luasnip.loaders.from_lua").lazy_load()
 
 -- }}}
 
--- blink.cmp {{{
+-- mini.completion {{{
 
-require("blink.cmp").setup({
-	snippets = { preset = "luasnip" },
-	sources = {
-		default = { "lsp", "path", "snippets", "buffer" },
-	},
+require("mini.completion").setup({
+	-- Keep our own completeopt (fuzzy), pumheight and shortmess settings.
+	set_vim_settings = false,
+	-- Set up LSP completion per client attach instead of on every BufEnter.
+	lsp_completion = { source_func = "omnifunc", auto_setup = false },
 })
+
+vim.api.nvim_create_autocmd("LspAttach", {
+	callback = function(args)
+		vim.bo[args.buf].omnifunc = "v:lua.MiniCompletion.completefunc_lsp"
+	end,
+})
+
+-- Scroll the info/signature window with <C-f>/<C-b> when it's open, otherwise
+-- keep the RSI cursor movement (<Right>/<Left>). Defined after setup so these
+-- override mini.completion's own scroll mappings.
+vim.keymap.set("i", "<C-f>", function()
+	return require("mini.completion").scroll("down") and "" or "<Right>"
+end, { expr = true })
+
+vim.keymap.set("i", "<C-b>", function()
+	return require("mini.completion").scroll("up") and "" or "<Left>"
+end, { expr = true })
 
 -- }}}
 
