@@ -169,13 +169,13 @@ vim.pack.add({
 	"https://github.com/nvim-treesitter/nvim-treesitter",
 	"https://github.com/neovim/nvim-lspconfig",
 	"https://github.com/echasnovski/mini.completion",
+	"https://github.com/echasnovski/mini.pick",
+	"https://github.com/echasnovski/mini.extra",
+	"https://github.com/stevearc/oil.nvim",
 	{
 		src = "https://github.com/L3MON4D3/LuaSnip",
 		version = vim.version.range("2.0.0"),
 	},
-	"https://github.com/nvim-lua/plenary.nvim",
-	"https://github.com/nvim-telescope/telescope-file-browser.nvim",
-	"https://github.com/nvim-telescope/telescope.nvim",
 })
 
 -- }}}
@@ -283,7 +283,11 @@ require("luasnip.loaders.from_lua").lazy_load()
 
 -- mini.completion {{{
 
-require("mini.completion").setup({
+local completion = require("mini.completion")
+
+completion.setup({
+	-- disable completion by setting long delay.
+	delay = { signature = 10^7 },
 	-- Keep our own completeopt (fuzzy), pumheight and shortmess settings.
 	set_vim_settings = false,
 	-- Set up LSP completion per client attach instead of on every BufEnter.
@@ -300,57 +304,70 @@ vim.api.nvim_create_autocmd("LspAttach", {
 -- keep the RSI cursor movement (<Right>/<Left>). Defined after setup so these
 -- override mini.completion's own scroll mappings.
 vim.keymap.set("i", "<C-f>", function()
-	return require("mini.completion").scroll("down") and "" or "<Right>"
+	return completion.scroll("down") and "" or "<Right>"
 end, { expr = true })
 
 vim.keymap.set("i", "<C-b>", function()
-	return require("mini.completion").scroll("up") and "" or "<Left>"
+	return completion.scroll("up") and "" or "<Left>"
 end, { expr = true })
 
 -- }}}
 
--- telescope.nvim {{{
+-- mini.pick {{{
 
-local actions = require("telescope.actions")
-local fb_actions = require("telescope").extensions.file_browser.actions
+local pick = require("mini.pick")
+local extra = require("mini.extra")
 
-require("telescope").setup({
-    defaults = require("telescope.themes").get_dropdown({
-        -- Your global defaults here
-    }),
-    extensions = {
-        file_browser = {
-            initial_mode = "normal",
-            respect_gitignore = true,
-            grouped = true,
-            hijack_netrw = true,
-            git_status = false,
-            theme = "dropdown", -- Ensuring file_browser uses the theme
-            mappings = {
-                ["n"] = {
-                    ["h"] = fb_actions.goto_parent_dir,
-                    ["l"] = actions.select_default,
-                    ["."] = fb_actions.toggle_hidden,
-                },
-            },
-        },
-    },
-})
-
-require("telescope").load_extension("file_browser")
+pick.setup()
+extra.setup()
 
 local map = vim.keymap.set
 local opt = { noremap = true, silent = true }
 
-map("n", "<leader>f", "<cmd>Telescope find_files theme=dropdown<cr>", opt)
-map("n", "<leader>g", "<cmd>Telescope live_grep theme=dropdown<cr>", opt)
-map("n", "<leader>b", "<cmd>Telescope buffers theme=dropdown<cr>", opt)
-map("n", "<leader>s", "<cmd>Telescope lsp_document_symbols theme=dropdown<cr>", opt)
-map("n", "<leader>a", "<cmd>Telescope lsp_dynamic_workspace_symbols theme=dropdown<cr>", opt)
-map("n", "<leader>e", "<cmd>Telescope diagnostics theme=dropdown<cr>", opt)
-map("n", "<leader>d", "<cmd>Telescope file_browser path=%:p:h select_buffer=true theme=dropdown<cr>", opt)
-map("n", "<leader>r", "<cmd>Telescope lsp_references theme=dropdown<cr>", opt)
-map("n", "<leader>t", "<cmd>Telescope lsp_definitions theme=dropdown<cr>", opt)
-map("n", "<leader>i", "<cmd>Telescope lsp_implementations theme=dropdown<cr>", opt)
+map("n", "<leader>f", pick.builtin.files, opt)
+map("n", "<leader>g", pick.builtin.grep_live, opt)
+map("n", "<leader>b", pick.builtin.buffers, opt)
+map("n", "<leader>s", function()
+	extra.pickers.lsp({ scope = "document_symbol" })
+end, opt)
+map("n", "<leader>a", function()
+	extra.pickers.lsp({ scope = "workspace_symbol" })
+end, opt)
+map("n", "<leader>e", function()
+	extra.pickers.diagnostic()
+end, opt)
+map("n", "<leader>r", function()
+	extra.pickers.lsp({ scope = "references" })
+end, opt)
+map("n", "<leader>t", function()
+	extra.pickers.lsp({ scope = "definition" })
+end, opt)
+map("n", "<leader>i", function()
+	extra.pickers.lsp({ scope = "implementation" })
+end, opt)
+
+-- }}}
+
+-- oil {{{
+
+local oil = require("oil")
+
+oil.setup({
+	default_file_explorer = true,
+})
+
+local map = vim.keymap.set
+local opt = { noremap = true, silent = true }
+
+-- Toggle the explorer: close it if focused, otherwise open the parent
+-- directory of the current file. Selecting a file with <CR> opens it in the
+-- same window, replacing the oil buffer.
+map("n", "<leader>d", function()
+	if vim.bo.filetype == "oil" then
+		oil.close()
+	else
+		oil.open()
+	end
+end, opt)
 
 -- }}}
