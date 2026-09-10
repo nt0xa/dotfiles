@@ -1,5 +1,7 @@
 # Configurable dev container image name
-set -g DEV_CONTAINER_IMAGE ghcr.io/nt0xa/devcontainer:main
+if not set -q MYVAR
+  set -g DEV_CONTAINER_IMAGE ghcr.io/nt0xa/devcontainer:main
+end
 
 # Generate container name based on current directory
 function __dev_container_name
