@@ -169,6 +169,7 @@ vim.pack.add({
 	"https://github.com/nvim-treesitter/nvim-treesitter",
 	"https://github.com/neovim/nvim-lspconfig",
 	"https://github.com/echasnovski/mini.completion",
+	"https://github.com/echasnovski/mini.pairs",
 	"https://github.com/echasnovski/mini.pick",
 	"https://github.com/echasnovski/mini.extra",
 	"https://github.com/stevearc/oil.nvim",
@@ -313,6 +314,12 @@ end, { expr = true })
 
 -- }}}
 
+-- mini.pairs {{{
+
+require("mini.pairs").setup()
+
+-- }}}
+
 -- mini.pick {{{
 
 local pick = require("mini.pick")
@@ -323,6 +330,27 @@ extra.setup()
 
 local map = vim.keymap.set
 local opt = { noremap = true, silent = true }
+
+local function lsp_picker(method, scope)
+	return function()
+		vim.lsp.buf[method]({
+			on_list = function(args)
+				if #args.items == 1 then
+					local item = args.items[1]
+					local client
+					if args.context and args.context.client_id then
+						client = vim.lsp.get_client_by_id(ctx.client_id)
+					end
+					client = client or vim.lsp.get_clients({ bufnr = 0 })[1]
+					local encoding = client and client.offset_encoding or 'utf-16'
+					vim.lsp.util.show_document(item.user_data, encoding, { focus = true })
+				else
+					extra.pickers.lsp({ scope = scope })
+				end
+			end
+		})
+	end
+end
 
 map("n", "<leader>f", pick.builtin.files, opt)
 map("n", "<leader>g", pick.builtin.grep_live, opt)
@@ -339,12 +367,8 @@ end, opt)
 map("n", "<leader>r", function()
 	extra.pickers.lsp({ scope = "references" })
 end, opt)
-map("n", "<leader>t", function()
-	extra.pickers.lsp({ scope = "definition" })
-end, opt)
-map("n", "<leader>i", function()
-	extra.pickers.lsp({ scope = "implementation" })
-end, opt)
+map("n", "<leader>t", lsp_picker("definition", "definition"), opt)
+map("n", "<leader>i", lsp_picker("implementation", "implementation"), opt)
 
 -- }}}
 
