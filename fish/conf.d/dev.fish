@@ -1,5 +1,5 @@
 # Configurable dev container image name
-if not set -q MYVAR
+if not set -q DEV_CONTAINER_IMAGE
   set -g DEV_CONTAINER_IMAGE ghcr.io/nt0xa/devcontainer:main
 end
 
