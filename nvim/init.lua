@@ -172,6 +172,7 @@ vim.pack.add({
 	"https://github.com/echasnovski/mini.pairs",
 	"https://github.com/echasnovski/mini.pick",
 	"https://github.com/echasnovski/mini.extra",
+  "https://github.com/echasnovski/mini.splitjoin",
 	"https://github.com/stevearc/oil.nvim",
 	{
 		src = "https://github.com/L3MON4D3/LuaSnip",
@@ -314,12 +315,6 @@ end, { expr = true })
 
 -- }}}
 
--- mini.pairs {{{
-
-require("mini.pairs").setup()
-
--- }}}
-
 -- mini.pick {{{
 
 local pick = require("mini.pick")
@@ -369,6 +364,13 @@ map("n", "<leader>r", function()
 end, opt)
 map("n", "<leader>t", lsp_picker("definition", "definition"), opt)
 map("n", "<leader>i", lsp_picker("implementation", "implementation"), opt)
+
+-- }}}
+
+-- mini {{{
+
+require("mini.pairs").setup()
+require("mini.splitjoin").setup()
 
 -- }}}
 
