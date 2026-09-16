@@ -21,6 +21,7 @@ function __dev_run_in_container
   set -l vols
   set -l command
   set -l net
+  set -l secopts
 
   while test (count $argv) -gt 0
     if test "$argv[1]" = "-e"
@@ -35,6 +36,12 @@ function __dev_run_in_container
     else if test "$argv[1]" = "-n"
       set net --network $argv[2]
       set -e argv[1..2]
+    else if test "$argv[1]" = "-s"
+      set -a secopts --security-opt $argv[2]
+      set -e argv[1..2]
+     else if test "$argv[1]" = "--privileged"
+      set -a secopts --privileged
+      set -e argv[1]
     else
       set command $argv
       break
@@ -77,7 +84,7 @@ function __dev_run_in_container
       --name $container_name \
       -w /code/(basename $PWD) \
       -v $PWD:/code/(basename $PWD) \
-      $net $vols $envs $ports \
+      $net $secopts $vols $envs $ports \
       $DEV_CONTAINER_IMAGE $command
   end
 end
