@@ -128,7 +128,9 @@ vim.keymap.set("i", "<C-a>", "<C-o>^", opts)
 vim.keymap.set("c", "<C-a>", "<Home>")
 
 -- Go to the end of the line.
-vim.keymap.set("i", "<C-e>", "<C-o>$", opts)
+vim.keymap.set("i", "<C-e>", function()
+	return vim.fn.pumvisible() == 1 and "<C-e>" or "<End>"
+end, { expr = true, silent = true })
 vim.keymap.set("c", "<C-e>", "<End>")
 
 -- Go forward.
