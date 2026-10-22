@@ -5,7 +5,6 @@ set -gx XDG_CONFIG_HOME $HOME/.config
 set -gx XDG_DATA_HOME $HOME/.local/share
 set -gx XDG_STATE_HOME $HOME/.local/state
 set -gx XDG_CACHE_HOME $HOME/.cache
-set -gx XDG_RUNTIME_DIR $HOME/.cache
 
 # }}} XDG Base Directory Specification #
 
@@ -29,9 +28,6 @@ set -gp fish_complete_path $XDG_DATA_HOME/fish/completions
 # Path }}} #
 
 # Settings {{{ #
-
-# History
-set -gx fish_history_size 100000
 
 # Disable greeting message
 set -g fish_greeting 
