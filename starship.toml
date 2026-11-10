@@ -22,3 +22,8 @@ format = '[\($branch\)]($style) '
 
 [container]
 format = '[\[docker\]]($style) '
+
+[hostname]
+ssh_only = true
+format = '[\[ssh\]]($style) '
+style = 'bold green'
